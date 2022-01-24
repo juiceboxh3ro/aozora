@@ -1,0 +1,49 @@
+{
+  "root": true,
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb-base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "project": "**/tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
+    // e.g. "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+    "no-debugger": 2,
+    "no-mixed-spaces-and-tabs": [0],
+    "no-tabs": 0,
+    "skipBlankLines": 0,
+    "ignoreComments": 0,
+    "no-trailing-spaces": [2, { "skipBlankLines": true }],
+    "no-irregular-whitespace": "off",
+    "no-control-regex": "off",
+    "no-extra-boolean-cast": "off",
+    "no-var-requires": "off"
+  },
+  "overrides": [
+    {
+      "files": "*.ts",
+      "excludedFiles": "./node_modules ./build",
+      "parserOptions": {
+        "project": ["**/tsconfig.json"]
+      }
+    }
+  ]
+}
