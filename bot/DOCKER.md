@@ -1,4 +1,4 @@
-## Notes: (moreso for myself)
+## Notes: (more so for myself)
 
 ### Commands
 - - `docker build -t aozora .` builds image from current directory with tag 'aozora'
@@ -22,14 +22,19 @@
 - - `docker volume prune` - remove unused named volumes
 - - `docker volume rm volume_name` - remove a named volume, must not be used in running container
 
+#### Interacting with a running container
+- `docker run -it -d node` - run a container named `node` in detached interactive mode
+- `docker exec -it :container_name :command` - runs :command in :container_name while it is running, e.g., `npm init` to create a node project in that container
+- `docker run -it :container_name npm init` - overrides the default command of a container and runs `npm init`
+
 ### Networks
 - `--network :name` : tells Docker to run container in network of :name
-- - replace `localhost` in URLs with the name of the network, e.g., `mongodb://localhost:27017` → `mongodb://azr-net:27017`
+- - replace `localhost` in URLs with the name of the network, e.g., `mongodb://localhost:27017` → `mongodb://azr-net:27017`, except for the frontend since the browser can't use that
 - `docker network ls` : list available Docker networks on your machine
 
 ## Workflow
 
-### Development
+### Development (without docker-compose)
 - `docker build -t aozora:dev .`
 - `docker network create azr-net`
 macOS/Linux
@@ -37,10 +42,10 @@ macOS/Linux
 Windows
 - `docker run -d --rm --network azr-net --env-file ./.env -v "%cd%":/balti:ro -v /balti/node_modules --name aozorabot aozora:dev`
 
-
 ### Development Command Notes
 - Code changes to the bot folder will require the container to be restarted to see changes as it relies on ts-node, and Discord doesn't seem to like nodemon managing that.
 - Currently the named volume of this project directory isn't working for me on macOS ARM, but hopefully it will for you. (It either fails to run the container or creates a temporary volume).
+- Frontend containers should include the `-it` flag so the server doesn't die.
 
 ### Production
 - `docker build -t aozora .`

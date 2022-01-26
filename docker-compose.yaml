@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  # api:
+  #   build: ./api
+  #   env_file:
+  #     - ./api/.env
+  #   ports:
+  #     - 4000:4000
+  #       external:internal
+  #   volumes:
+  #     - /api/node_modules
+  bot:
+    # image: 'juiceboxh3ro/aozora-bot:dev'
+    # container_name: azrbot
+    build: ./bot
+    env_file:
+      - ./bot/.env
+    ports:
+      - '80:80'
+    volumes:
+      - ./bot:/azrbot
+      - /balti/node_modules
+  #   depends_on:
+  #     - api
+  # client:
+  #   build: ./client
+  #   env_file:
+  #     - ./client/.env
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - /client/node_modules
+  #   stdin_open: true
+  #   tty: true
+  #   depends_on:
+  #     - api
+# named volumes used in services must be listed again here
+# volumes:
+#   example:

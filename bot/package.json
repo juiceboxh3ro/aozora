@@ -6,7 +6,7 @@
   "repository": "https://github.com/juiceboxh3ro/aozora",
   "private": false,
   "scripts": {
-    "start": "yarn build && node dist/Bot.js",
+    "start": "node build/Bot.js",
     "dev": "ts-node src/Bot.ts",
     "build": "tsc --skipLibCheck",
     "test": ""
@@ -33,6 +33,7 @@
   "devDependencies": {
     "@types/node": "^17.0.8",
     "@types/wanakana": "^4.0.3",
+    "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   }
