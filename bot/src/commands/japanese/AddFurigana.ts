@@ -33,9 +33,7 @@ export const AddFurigana: Command = {
       delimiter_end: ')',
     }
 
-    const withFurigana = WithFurigana.convert(token, furiOptions)
-
-    console.log(withFurigana)
+    const withFurigana: string = await WithFurigana.convert(token, furiOptions)
 
     // const embed = new MessageEmbed()
     //   .setColor('#4D8DE6')
@@ -56,6 +54,6 @@ export const AddFurigana: Command = {
     // embed.setDescription(parsed)
     
 
-    await interaction.editReply({ content: 'Done!' })
+    await interaction.editReply({ content: withFurigana })
   },
 }

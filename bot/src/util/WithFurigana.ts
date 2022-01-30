@@ -9,7 +9,7 @@ class WithFurigana {
       const tokens: string[] = tokenize(token, { compact: true })
 
       const ks: kuroshiro = new Kuroshiro()
-      ks.init(new KuromojiAnalyzer())
+      await ks.init(new KuromojiAnalyzer())
   
       const defaultOptions: ConvertOptions = {
         to: 'hiragana',
