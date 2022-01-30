@@ -41,7 +41,7 @@ export default class DeepLAPI implements DeepLClass {
       const _source = this.source.trim().length ? `&source_lang=${this.source}` : ''
       const _query = this.DEEPL_URL + '/translate' + _auth + _token + _target + _source
 
-      const response = await axios.get<DeepLResponse>(_query)
+      const response = await axios.get<DeepLResponse>(encodeURI(_query))
 
       if (response.status === 200) {
         return this.deeplReducer(response.data)

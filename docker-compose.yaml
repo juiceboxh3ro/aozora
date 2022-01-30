@@ -9,8 +9,11 @@ services:
   #       external:internal
   #   volumes:
   #     - /api/node_modules
+  #   depends_on:
+  #     - bot
+  #     - client
   bot:
-    # image: 'juiceboxh3ro/aozora-bot:dev'
+    # image: 'juiceboxh3ro/aozora-bot:dev' # remote image on dockerhub
     # container_name: azrbot
     build: ./bot
     env_file:
@@ -20,8 +23,6 @@ services:
     volumes:
       - ./bot:/azrbot
       - /balti/node_modules
-  #   depends_on:
-  #     - api
   # client:
   #   build: ./client
   #   env_file:
@@ -32,8 +33,6 @@ services:
   #     - /client/node_modules
   #   stdin_open: true
   #   tty: true
-  #   depends_on:
-  #     - api
 # named volumes used in services must be listed again here
 # volumes:
 #   example:

@@ -48,5 +48,26 @@ Windows
 - Frontend containers should include the `-it` flag so the server doesn't die.
 
 ### Production
+#### AWS EC2
+build the image and push
+- `docker build -t juiceboxh3ro/aozora:latest .`
+- `docker push juiceboxh3ro/aozora:latest`
+initial setup:
+- `connect bash to AWS`
+- `sudo yum update -y`
+- `sudo amazon-linux-extras install docker`
+if instance is down or restarted
+- `sudo service docker start`
+pull the image
+- `connect bash to AWS`
+- `sudo docker pull juiceboxh3ro/aozora:latest`
+- `
+  sudo docker run \
+  --platform linux/amd64 \
+  -d --rm -p 80:80 \
+  juiceboxh3ro/aozora:latest
+  `
+
+non-AWS (maybe)
 - `docker build -t aozora .`
 - `docker run -d --rm --network azr-net --name aozorabot juiceboxh3ro/aozora:latest`

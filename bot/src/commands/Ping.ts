@@ -6,12 +6,6 @@ export const Ping: Command = {
   description: 'Ping Pong Bing Bong',
   type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction) => {
-    console.log('client')
-    console.log(client)
-    console.log('\n')
-    console.log('interaction:')
-    console.log(interaction)
-
     const content = 'Pong!'
 
     await interaction.followUp({

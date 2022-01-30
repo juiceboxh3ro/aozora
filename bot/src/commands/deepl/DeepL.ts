@@ -32,12 +32,6 @@ export const DeepL: Command = {
       type: DiscordJS.Constants.ApplicationCommandOptionTypes.STRING,
     },
     {
-      name: 'furigana',
-      description: 'Optional: If translating into Japanese, return kanji readings',
-      required: false,
-      type: DiscordJS.Constants.ApplicationCommandOptionTypes.BOOLEAN,
-    },
-    {
       name: 'source',
       description: 'Optional: Source language (for list of available languages use /available)',
       required: false,
