@@ -1,11 +1,12 @@
 import Kuroshiro from 'kuroshiro'
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
-import { ConvertOptions, kuroshiro, kuroshiro_analyzer_kuromoji } from 'src/typings/types'
+import { ConvertOptions, kuroshiro } from 'src/typings/types'
 import { tokenize, isJapanese } from 'wanakana'
 
 class WithFurigana {
   static async convert (token: string, options?: ConvertOptions) {
     try {
+      // separate English and Japanese
       const tokens: string[] = tokenize(token, { compact: true })
 
       const ks: kuroshiro = new Kuroshiro()
@@ -13,25 +14,30 @@ class WithFurigana {
   
       const defaultOptions: ConvertOptions = {
         to: 'hiragana',
-        mode: 'normal',
+        mode: 'okurigana',
         romajiSystem: 'hepburn',
         delimiter_start: '(',
         delimiter_end: ')',
       }
   
       const convertOptions = options ? options : defaultOptions
-      const results: string[] = []
+      const convertedTokens: string[] = []
 
       for (let i = 0; i < tokens.length; i++) {
-        if (isJapanese(tokens[i])) {
-          const convertedToken = await ks.convert(tokens[i], convertOptions)
-          results.push(convertedToken)
+        const _token = tokens[i]
+        if (!_token?.trim().length) continue
+
+        if (isJapanese(_token)) {
+          const converted = await ks.convert(_token, convertOptions)
+          console.log(converted)
+          const appendedFuri = converted === _token ? _token : converted
+          convertedTokens.push(appendedFuri)
         } else {
-          results.push(tokens[i])
+          convertedTokens.push(_token)
         }
       }
 
-      return results.join(' ')
+      return convertedTokens.join(' ')
     } catch (err) {
       console.error(err)
       return 'i am error'

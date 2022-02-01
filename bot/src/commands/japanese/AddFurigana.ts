@@ -25,15 +25,7 @@ export const AddFurigana: Command = {
       return 
     }
 
-    const furiOptions: ConvertOptions = {
-      to: 'hiragana',
-      mode: 'normal',
-      romajiSystem: 'hepburn',
-      delimiter_start: '(',
-      delimiter_end: ')',
-    }
-
-    const withFurigana: string = await WithFurigana.convert(token, furiOptions)
+    const withFurigana: string = await WithFurigana.convert(token)
 
     // const embed = new MessageEmbed()
     //   .setColor('#4D8DE6')

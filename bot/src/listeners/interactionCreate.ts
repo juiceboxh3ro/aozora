@@ -19,12 +19,16 @@ const handleSlashCommand = async (
 ): Promise<void> => {
   const slashCommand = Commands.find(c => c.name === interaction.commandName)
 
-  if (!slashCommand) {
-    interaction.followUp({ content: "An error has occurred" })
-    return
+  try {
+    if (!slashCommand) {
+      throw new Error(`Interaction ${interaction.commandName} is not a registered slash command`)
+    }
+
+    await interaction.deferReply()
+
+    slashCommand.run(client, interaction)
+  } catch (err) {
+    console.error(err)
+    interaction.followUp({ content: 'An error has occurred'})
   }
-
-  await interaction.deferReply()
-
-  slashCommand.run(client, interaction)
 }
