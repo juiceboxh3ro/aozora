@@ -2,6 +2,7 @@
   "eslint.workingDirectories": [
     "./api",
     "./bot",
-    "./client"
-  ]
+    "./client",
+    "./gazo"
+  ],
 }

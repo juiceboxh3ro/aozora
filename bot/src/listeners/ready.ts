@@ -1,7 +1,7 @@
 import { Client } from 'discord.js'
-import { Commands } from '../Commands'
-import interactionCreate from '../listeners/interactionCreate'
 import mongoose from 'mongoose'
+import Commands from '../Commands'
+import interactionCreate from './interactionCreate'
 import commandHandler from './commandHandler'
 
 const DATABASE = process.env.DATABASE || ''
@@ -33,6 +33,6 @@ export default (client: Client): void => {
 
     await client.application.commands.set(Commands)
 
-    console.log(`${client.user.username} is online`)
+    console.log(`🌳 ${client.user.username} is online`)
   })
 }

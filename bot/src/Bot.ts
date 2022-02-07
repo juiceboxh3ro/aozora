@@ -2,7 +2,7 @@ import 'dotenv/config'
 import { Client, Intents } from 'discord.js'
 import ready from './listeners/ready'
 
-console.log('Aozora is starting...')
+console.log('🌱 Aozora is starting...')
 
 const TOKEN = process.env.PRIVATE_KEY || ''
 

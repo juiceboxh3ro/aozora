@@ -3,46 +3,47 @@ import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import { ConvertOptions, kuroshiro } from 'src/typings/types'
 import { tokenize, isJapanese } from 'wanakana'
 
-class WithFurigana {
-  static async convert (token: string, options?: ConvertOptions) {
-    try {
-      // separate English and Japanese
-      const tokens: string[] = tokenize(token, { compact: true })
+const withFurigana = async (token: string, options?: ConvertOptions): Promise<string> => {
+  try {
+    // separate English and Japanese
+    const tokens: string[] = tokenize(token, { compact: true })
 
-      const ks: kuroshiro = new Kuroshiro()
-      await ks.init(new KuromojiAnalyzer())
-  
-      const defaultOptions: ConvertOptions = {
-        to: 'hiragana',
-        mode: 'okurigana',
-        romajiSystem: 'hepburn',
-        delimiter_start: '(',
-        delimiter_end: ')',
-      }
-  
-      const convertOptions = options ? options : defaultOptions
-      const convertedTokens: string[] = []
+    const ks: kuroshiro = new Kuroshiro()
+    await ks.init(new KuromojiAnalyzer())
 
-      for (let i = 0; i < tokens.length; i++) {
-        const _token = tokens[i]
-        if (!_token?.trim().length) continue
+    const defaultOptions: ConvertOptions = {
+      to: 'hiragana',
+      mode: 'okurigana',
+      romajiSystem: 'hepburn',
+      delimiter_start: '(',
+      delimiter_end: ')',
+    }
+    const convertOptions = options || defaultOptions
 
+    const preconvertedTokens: any[] = []
+    tokens.forEach((_token) => {
+      if (_token.trim().length) {
         if (isJapanese(_token)) {
-          const converted = await ks.convert(_token, convertOptions)
-          console.log(converted)
-          const appendedFuri = converted === _token ? _token : converted
-          convertedTokens.push(appendedFuri)
+          preconvertedTokens.push(ks.convert(_token, convertOptions))
         } else {
-          convertedTokens.push(_token)
+          preconvertedTokens.push(_token)
         }
       }
+    })
 
-      return convertedTokens.join(' ')
-    } catch (err) {
-      console.error(err)
-      return 'i am error'
-    }
+    const converted = await Promise.all(preconvertedTokens)
+
+    const convertedTokens: string[] = []
+    converted.forEach((cToken) => {
+      const appendedFuri = cToken === token ? token : cToken
+      convertedTokens.push(appendedFuri)
+    })
+
+    return convertedTokens.join(' ')
+  } catch (err) {
+    console.error(err)
+    return 'i am error'
   }
 }
 
-export default WithFurigana
+export default withFurigana

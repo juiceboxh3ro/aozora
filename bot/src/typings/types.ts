@@ -1,4 +1,8 @@
-import { BaseCommandInteraction, ChatInputApplicationCommandData, Client } from "discord.js"
+/* eslint-disable no-shadow */
+/* eslint-disable no-multi-spaces */
+/* eslint-disable no-use-before-define */
+/* eslint-disable max-classes-per-file */
+import { BaseCommandInteraction, ChatInputApplicationCommandData, Client } from 'discord.js'
 
 export interface Command extends ChatInputApplicationCommandData {
   run: (client: Client, interaction: BaseCommandInteraction) => void
@@ -114,3 +118,4 @@ export declare class kuroshiro_analyzer_kuromoji {
 
   parse(...args: any[]): any
 }
+/* eslint-enable */

@@ -1,5 +1,10 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
-import { DeepLClass, DeepLResponse, Embed, StringMap } from 'src/typings/types'
+import axios, { AxiosError } from 'axios'
+import {
+  DeepLClass,
+  DeepLResponse,
+  Embed,
+  StringMap,
+} from 'src/typings/types'
 
 /**
  * @description A class wrapper for DeepL API interactions; translate and available languages on DeepL.
@@ -10,7 +15,7 @@ import { DeepLClass, DeepLResponse, Embed, StringMap } from 'src/typings/types'
  * @returns {string | Embeds[]} `response` - returns an array of embeds, or a string if an error occurs.
  */
 export default class DeepLAPI implements DeepLClass {
-  constructor (
+  constructor(
     public token: string,
     public target: string,
     public source: string,
@@ -21,16 +26,20 @@ export default class DeepLAPI implements DeepLClass {
   }
 
   private DEEPL_URL = 'https://api-free.deepl.com/v2'
+  
   private DEEPL_API_KEY: string | undefined = process.env.DEEPL_API_KEY
+  
   private API_RESPONSE: string | Embed[] = ''
+  
   private SUPPORTED_TARGETS = ['BG', 'CS', 'DA', 'DE', 'EL', 'EN-GB', 'EN-US', 'ES', 'ET', 'FI', 'FR', 'HU', 'IT', 'JA', 'LT', 'LV', 'NL', 'PL', 'PT-BR', 'PT-PT', 'RO', 'RU', 'SK', 'SL', 'SV', 'ZH']
+  
   private SUPPORTED_SOURCES = ['BG', 'CS', 'DA', 'DE', 'EL', 'EN', 'ES', 'ET', 'FI', 'FR', 'HU', 'IT', 'JA', 'LT', 'LV', 'NL', 'PL', 'PT', 'RO', 'RU', 'SK', 'SL', 'SV', 'ZH']
 
-  async translate (): Promise<string | Embed[]> {
+  async translate(): Promise<string | Embed[]> {
     try {
       if (
-        !this.iso6391ToName(this.target, 'target') ||
-        (this.source.trim().length && !this.iso6391ToName(this.source, 'source'))
+        !this.iso6391ToName(this.target, 'target')
+        || (this.source.trim().length && !this.iso6391ToName(this.source, 'source'))
       ) {
         throw new Error(`Unsupported source language: ${this.source}`)
       }
@@ -38,23 +47,22 @@ export default class DeepLAPI implements DeepLClass {
       const _auth = `?auth_key=${this.DEEPL_API_KEY}`
       const _token = `&text=${this.token}`
       const _target = `&target_lang=${this.target}`
-      const _source = this.source.trim().length ? `&source_lang=${this.source}` : ''
-      const _query = this.DEEPL_URL + '/translate' + _auth + _token + _target + _source
+      const _source = this.source?.trim().length ? `&source_lang=${this.source}` : ''
+      const _query = `${this.DEEPL_URL}/translate${_auth}${_token}${_target}${_source}`
 
       const response = await axios.get<DeepLResponse>(encodeURI(_query))
 
       if (response.status === 200) {
         return this.deeplReducer(response.data)
-      } else {
-        throw new Error('Something went wrong!')
       }
+      throw new Error('Something went wrong!')
     } catch (e) {
       const error = e as AxiosError
       return this.onError(error)
     }
   }
 
-  private onError (error?: AxiosError): string {
+  private onError(error?: AxiosError): string {
     console.log(error?.stack)
     console.log(error?.code)
     console.log(error?.message)
@@ -64,21 +72,21 @@ export default class DeepLAPI implements DeepLClass {
     return message
   }
 
-  private deeplReducer (data: DeepLResponse): Embed[] {
+  private deeplReducer(data: DeepLResponse): Embed[] {
     const embeds: Embed[] = []
 
     data.translations.forEach((translation) => {
       embeds.push({
         name: `"${this.token}"`,
         value: translation.text,
-        inline: true
+        inline: true,
       })
     })
     this.API_RESPONSE = embeds
     return embeds
   }
 
-  private iso6391ToName (iso: string, sourceType: string): string | boolean {
+  private iso6391ToName(iso: string, sourceType: string): string | boolean {
     switch (sourceType) {
       case 'target':
         if (!this.SUPPORTED_TARGETS.includes(iso)) return false
@@ -86,6 +94,7 @@ export default class DeepLAPI implements DeepLClass {
       case 'source':
         if (!this.SUPPORTED_SOURCES.includes(iso)) return false
         break
+      default:
     }
 
     const options: StringMap = {
@@ -122,12 +131,12 @@ export default class DeepLAPI implements DeepLClass {
     return options[iso]
   }
 
-  get response (): any {
+  get response(): any {
     console.log(this.API_RESPONSE)
     return this.API_RESPONSE
   }
 
-  get supported (): string[] {
-    return []
-  }
+  // get supported(): string[] {
+  //   return []
+  // }
 }

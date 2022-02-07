@@ -14,7 +14,7 @@ const data = new SlashCommandBuilder()
 			.setRequired(true));
 */
 
-export const DeepL: Command = {
+const DeepL: Command = {
   name: 'deepl',
   description: 'Translate a word or phrase using DeepL translation services',
   type: 'CHAT_INPUT',
@@ -49,7 +49,7 @@ export const DeepL: Command = {
       await interaction.editReply({
         content: `Enter a shorter phrase, please! Your token is ${token.trim().length - 280} characters too long.`
       })
-      return 
+      return
     }
 
     const deepL = new DeepLAPI(token, target, source)
@@ -61,7 +61,7 @@ export const DeepL: Command = {
       // .setURL('https://www.deepl.com/translator')
       .setAuthor({
         name: 'DeepL Translation',
-        iconURL: process.env.BUCKET + '/images/assets/deepl.jpg',
+        iconURL: `${process.env.BUCKET}/images/assets/deepl.jpg`,
         url: 'https://www.deepl.com/translator',
       })
       // .setFooter({
@@ -79,3 +79,5 @@ export const DeepL: Command = {
     await interaction.editReply({ embeds: [embed] })
   },
 }
+
+export default DeepL

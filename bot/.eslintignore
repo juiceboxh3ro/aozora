@@ -1,4 +1,5 @@
-/build/
-/config/
-/dist/
-/test/unit/coverage/
+build
+config
+dist
+test/unit/coverage
+node_modules

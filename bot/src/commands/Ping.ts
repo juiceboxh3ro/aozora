@@ -1,7 +1,7 @@
 import { BaseCommandInteraction, Client } from 'discord.js'
 import { Command } from '../typings/types'
 
-export const Ping: Command = {
+const Ping: Command = {
   name: 'ping',
   description: 'Ping Pong Bing Bong',
   type: 'CHAT_INPUT',
@@ -14,3 +14,5 @@ export const Ping: Command = {
     })
   },
 }
+
+export default Ping

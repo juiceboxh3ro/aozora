@@ -26,7 +26,7 @@ export default (client: Client): void => {
 
     try {
       commands[commandName].callback(message, ...args)
-    } catch(err) {
+    } catch (err) {
       console.error(err)
     }
   })

@@ -1,8 +1,8 @@
 import DiscordJS, { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
-import { Command, ConvertOptions } from '../../typings/types'
-import WithFurigana from '../../util/WithFurigana'
+import { Command } from '../../typings/types'
+import withFurigana from '../../util/withFurigana'
 
-export const AddFurigana: Command = {
+const AddFurigana: Command = {
   name: 'furigana',
   description: 'Add kanji readings to a Japanese word or phrase',
   type: 'CHAT_INPUT',
@@ -22,10 +22,10 @@ export const AddFurigana: Command = {
       await interaction.editReply({
         content: `Enter a shorter phrase, please! Your token is ${token.trim().length - 280} characters too long.`
       })
-      return 
+      return
     }
 
-    const withFurigana: string = await WithFurigana.convert(token)
+    const content: string = await withFurigana(token)
 
     // const embed = new MessageEmbed()
     //   .setColor('#4D8DE6')
@@ -41,11 +41,11 @@ export const AddFurigana: Command = {
     //     iconURL: process.env.S3_BUCKET + '/images/assets/deepl.jpg',
     //   })
     //   .setTimestamp()
-
     
     // embed.setDescription(parsed)
-    
 
-    await interaction.editReply({ content: withFurigana })
+    await interaction.editReply({ content })
   },
 }
+
+export default AddFurigana

@@ -1,24 +1,29 @@
 {
   "root": true,
   "env": {
-    "es2021": true,
+    "es6": true,
     "node": true
   },
   "extends": [
     "airbnb-base",
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": 2020,
-    "sourceType": "module",
-    "project": "**/tsconfig.json"
+    "ecmaVersion": 2021
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "@typescript-eslint",
+    "jest"
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
   "rules": {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
@@ -31,18 +36,31 @@
     "no-tabs": 0,
     "skipBlankLines": 0,
     "ignoreComments": 0,
+    "import/extensions": 0,
     "no-trailing-spaces": [2, { "skipBlankLines": true }],
     "no-irregular-whitespace": "off",
     "no-control-regex": "off",
     "no-extra-boolean-cast": "off",
-    "no-var-requires": "off"
+    "no-var-requires": "off",
+    "no-underscore-dangle": "off",
+    "comma-dangle": "off",
+    "semi": "off",
+    "max-len": "off",
+    "quote-props": "off",
+    "no-console": "off",
+    "function-paren-newline": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "camelcase": "off",
+    "no-continue": "off",
+    "no-await-in-loop": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
   },
   "overrides": [
     {
-      "files": "*.ts",
+      "files": "./src/**/*.{js,ts}",
       "excludedFiles": "./node_modules ./build",
       "parserOptions": {
-        "project": ["**/tsconfig.json"]
+        "project": ["tsconfig.json"]
       }
     }
   ]
