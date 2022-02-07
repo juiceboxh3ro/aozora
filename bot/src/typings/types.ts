@@ -2,15 +2,43 @@
 /* eslint-disable no-multi-spaces */
 /* eslint-disable no-use-before-define */
 /* eslint-disable max-classes-per-file */
-import { BaseCommandInteraction, ChatInputApplicationCommandData, Client } from 'discord.js'
+import {
+  BaseCommandInteraction,
+  ChatInputApplicationCommandData,
+  Client,
+  ContextMenuInteraction,
+  EmbedAuthorData,
+  EmbedFieldData,
+  EmbedFooterData,
+  MessageApplicationCommandData,
+  UserApplicationCommandData,
+} from 'discord.js'
 
-export interface Command extends ChatInputApplicationCommandData {
-  run: (client: Client, interaction: BaseCommandInteraction) => void
+export type AZR_EmbedHandler = {
+  description?: string,
+  footer?: EmbedFooterData,
+  author?: EmbedAuthorData
+  fields?: EmbedFieldData[]
+}
+
+export interface SlashCommand extends ChatInputApplicationCommandData {
+  isDevCommand: boolean
+  run: (client: Client, interaction: BaseCommandInteraction) => Promise<void>
+}
+
+export interface MessageCommand extends MessageApplicationCommandData {
+  isDevCommand: boolean
+  run: (client: Client, interaction: ContextMenuInteraction) => Promise<void>
+}
+
+export interface UserCommand extends UserApplicationCommandData {
+  isDevCommand: boolean
+  run: (client: Client, interaction: ContextMenuInteraction) => Promise<void>
 }
 
 export interface DeepLClass {
   token: string
-  translate: (arg0: string, arg1: string, arg2: string) => Promise<string | Embed[]>
+  translate: (arg0: string, arg1: string, arg2: string) => Promise<boolean | EmbedFieldData[]>
 }
 
 export interface DeepLResponse {
@@ -18,12 +46,6 @@ export interface DeepLResponse {
     text: string
     detected_source_language?: string
   }[]
-}
-
-export interface Embed {
-  name: string
-  value: string
-  inline?: boolean
 }
 
 export interface StringMap {

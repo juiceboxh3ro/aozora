@@ -1,16 +1,19 @@
 import { Client, Message } from 'discord.js'
 
-const commands: {
+const CHAT_COMMANDS: {
   [key: string]: any
 } = {
-  'test': {
-    callback: (message: Message, rest: string[]) => {
+  test: {
+    action: (message: Message, rest: string[]) => {
       console.log(rest)
       message.reply('it work')
     }
   }
 }
 
+/**
+ * Sets up the classic flavor of bot interaction where a user types a prefix to a command, the command name, and any arguments.
+ */
 export default (client: Client): void => {
   client.on('messageCreate', async (message: Message) => {
     console.log('\n')
@@ -19,13 +22,13 @@ export default (client: Client): void => {
     console.log('\n')
     if (message.author.bot || message.author.system || !message.content.startsWith('!azr')) return
 
-    const args = message.content.slice(1).split(/ +/)
+    const args: string[] = message.content.split(/ +/).slice(1)
     const commandName: string = args.shift()!.toLowerCase()
     
-    if (!commands[commandName]) return
+    if (!CHAT_COMMANDS[commandName]) return
 
     try {
-      commands[commandName].callback(message, ...args)
+      CHAT_COMMANDS[commandName].action(message, ...args)
     } catch (err) {
       console.error(err)
     }

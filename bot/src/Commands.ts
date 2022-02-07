@@ -1,12 +1,18 @@
-import { Command } from './typings/types'
+import { SlashCommand, MessageCommand, UserCommand } from './typings/types'
 import Ping from './commands/Ping'
 import DeepL from './commands/deepl/DeepL'
 import AddFurigana from './commands/japanese/AddFurigana'
 
-const Commands: Command[] = [
-  Ping,
+const DevCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
+  Ping
+]
+
+const GuildCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
   DeepL,
   AddFurigana
 ]
 
-export default Commands
+export default {
+  DevCommands,
+  GuildCommands,
+}

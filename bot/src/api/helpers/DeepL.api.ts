@@ -1,18 +1,22 @@
 import axios, { AxiosError } from 'axios'
+import { EmbedFieldData } from 'discord.js'
 import {
   DeepLClass,
   DeepLResponse,
-  Embed,
   StringMap,
 } from 'src/typings/types'
 
 /**
- * @description A class wrapper for DeepL API interactions; translate and available languages on DeepL.
- * @param {Method} [method='GET'] translates a given token into a target language.
+ * A class wrapper for DeepL API interactions.
+ * Offers methods {@link translate} and {@link supported} languages on DeepL.
+ *
+ * DeepLAPI Contructor params:
  * @param {string} `token` - the word or phrase to be translate.
  * @param {string} `target` - the target language, non-optional but falls back to Japanese.
  * @param {string} `source` - the source language, optional since it's auto-detected by DeepL.
- * @returns {string | Embeds[]} `response` - returns an array of embeds, or a string if an error occurs.
+ *
+ * `DeepLAPI.translate` method:
+ * @returns {string | EmbedFieldData[]} `response` - returns an array of embed fields, or a string if an error occurs.
  */
 export default class DeepLAPI implements DeepLClass {
   constructor(
@@ -29,13 +33,13 @@ export default class DeepLAPI implements DeepLClass {
   
   private DEEPL_API_KEY: string | undefined = process.env.DEEPL_API_KEY
   
-  private API_RESPONSE: string | Embed[] = ''
+  private API_RESPONSE: string | EmbedFieldData[] = ''
   
   private SUPPORTED_TARGETS = ['BG', 'CS', 'DA', 'DE', 'EL', 'EN-GB', 'EN-US', 'ES', 'ET', 'FI', 'FR', 'HU', 'IT', 'JA', 'LT', 'LV', 'NL', 'PL', 'PT-BR', 'PT-PT', 'RO', 'RU', 'SK', 'SL', 'SV', 'ZH']
   
   private SUPPORTED_SOURCES = ['BG', 'CS', 'DA', 'DE', 'EL', 'EN', 'ES', 'ET', 'FI', 'FR', 'HU', 'IT', 'JA', 'LT', 'LV', 'NL', 'PL', 'PT', 'RO', 'RU', 'SK', 'SL', 'SV', 'ZH']
 
-  async translate(): Promise<string | Embed[]> {
+  async translate(): Promise<boolean | EmbedFieldData[]> {
     try {
       if (
         !this.iso6391ToName(this.target, 'target')
@@ -62,28 +66,59 @@ export default class DeepLAPI implements DeepLClass {
     }
   }
 
-  private onError(error?: AxiosError): string {
+  private onError(error?: AxiosError): boolean {
     console.log(error?.stack)
     console.log(error?.code)
     console.log(error?.message)
 
     const message = 'Something went wrong!'
     this.API_RESPONSE = message
-    return message
+    return false
   }
 
-  private deeplReducer(data: DeepLResponse): Embed[] {
-    const embeds: Embed[] = []
+  private deeplReducer(data: DeepLResponse): EmbedFieldData[] {
+    const fields: EmbedFieldData[] = []
 
     data.translations.forEach((translation) => {
-      embeds.push({
+      fields.push({
         name: `"${this.token}"`,
         value: translation.text,
         inline: true,
       })
     })
-    this.API_RESPONSE = embeds
-    return embeds
+    this.API_RESPONSE = fields
+    return fields
+  }
+
+  private options: StringMap = {
+    'BG': 'Bulgarian',
+    'CS': 'Czech',
+    'DA': 'Danish',
+    'DE': 'German',
+    'EL': 'Greek',
+    'EN': 'English (source only)',
+    'EN-GB': 'English (British)',
+    'EN-US': 'English (American)',
+    'ES': 'Spanish',
+    'ET': 'Estonian',
+    'FI': 'Finnish',
+    'FR': 'French',
+    'HU': 'Hungarian',
+    'IT': 'Italian',
+    'JA': 'Japanese',
+    'LT': 'Lithuanian',
+    'LV': 'Latvian',
+    'NL': 'Dutch',
+    'PL': 'Polish',
+    'PT': 'Portuguese (source only)',
+    'PT-BR': 'Portuguese (Brazil)',
+    'PT-PT': 'Portuguese (Portugal)',
+    'RO': 'Romanian',
+    'RU': 'Russian',
+    'SK': 'Slovak',
+    'SL': 'Slovenian',
+    'SV': 'Swedish',
+    'ZH': 'Chinese (Mandarin)',
   }
 
   private iso6391ToName(iso: string, sourceType: string): string | boolean {
@@ -97,38 +132,7 @@ export default class DeepLAPI implements DeepLClass {
       default:
     }
 
-    const options: StringMap = {
-      'BG': 'Bulgarian',
-      'CS': 'Czech',
-      'DA': 'Danish',
-      'DE': 'German',
-      'EL': 'Greek',
-      'EN': 'English',
-      'EN-GB': 'English (British)',
-      'EN-US': 'English (American)',
-      'ES': 'Spanish',
-      'ET': 'Estonian',
-      'FI': 'Finnish',
-      'FR': 'French',
-      'HU': 'Hungarian',
-      'IT': 'Italian',
-      'JA': 'Japanese',
-      'LT': 'Lithuanian',
-      'LV': 'Latvian',
-      'NL': 'Dutch',
-      'PL': 'Polish',
-      'PT': 'Portuguese',
-      'PT-BR': 'Portuguese (Brazil)',
-      'PT-PT': 'Portuguese (Portugal)',
-      'RO': 'Romanian',
-      'RU': 'Russian',
-      'SK': 'Slovak',
-      'SL': 'Slovenian',
-      'SV': 'Swedish',
-      'ZH': 'Chinese (Mandarin)',
-    }
-
-    return options[iso]
+    return this.options[iso]
   }
 
   get response(): any {
@@ -136,7 +140,7 @@ export default class DeepLAPI implements DeepLClass {
     return this.API_RESPONSE
   }
 
-  // get supported(): string[] {
-  //   return []
-  // }
+  get supported(): StringMap {
+    return this.options
+  }
 }
