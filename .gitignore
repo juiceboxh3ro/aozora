@@ -5,9 +5,9 @@
 .DS_Store
 *.log
 *.env
+*.idea
 
 /utility
 /api/.env
-/api/README.md
 
 /gazo

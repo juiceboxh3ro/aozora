@@ -1,10 +1,11 @@
 import { BaseCommandInteraction, Client } from 'discord.js'
-import { Command } from '../typings/types'
+import { SlashCommand } from '../typings/types'
 
-const Ping: Command = {
+const Ping: SlashCommand = {
   name: 'ping',
   description: 'Ping Pong Bing Bong',
   type: 'CHAT_INPUT',
+  isDevCommand: true,
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     const content = 'Pong!'
 

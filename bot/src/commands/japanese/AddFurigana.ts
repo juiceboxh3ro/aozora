@@ -1,8 +1,8 @@
 import DiscordJS, { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
-import { Command } from '../../typings/types'
+import { SlashCommand } from '../../typings/types'
 import withFurigana from '../../util/withFurigana'
 
-const AddFurigana: Command = {
+const AddFurigana: SlashCommand = {
   name: 'furigana',
   description: 'Add kanji readings to a Japanese word or phrase',
   type: 'CHAT_INPUT',
@@ -14,6 +14,7 @@ const AddFurigana: Command = {
       type: DiscordJS.Constants.ApplicationCommandOptionTypes.STRING,
     },
   ],
+  isDevCommand: false,
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     const { options } = interaction
     const token = options.get('token', true).value!.toString()
