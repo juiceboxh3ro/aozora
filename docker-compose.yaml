@@ -13,15 +13,12 @@ services:
   #     - bot
   #     - client
   bot:
-    # image: 'juiceboxh3ro/aozora-bot:dev' # remote image on dockerhub
-    # container_name: azrbot
     build: ./bot
     env_file:
       - ./bot/.env
     ports:
       - '80:80'
     volumes:
-      - ./bot:/azrbot
       - /balti/node_modules
   # client:
   #   build: ./client
@@ -33,6 +30,3 @@ services:
   #     - /client/node_modules
   #   stdin_open: true
   #   tty: true
-# named volumes used in services must be listed again here
-# volumes:
-#   example:

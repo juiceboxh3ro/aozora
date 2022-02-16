@@ -3,6 +3,7 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable max-classes-per-file */
 import {
+  ActivitiesOptions,
   BaseCommandInteraction,
   ChatInputApplicationCommandData,
   Client,
@@ -11,6 +12,7 @@ import {
   EmbedFieldData,
   EmbedFooterData,
   MessageApplicationCommandData,
+  PresenceStatusData,
   UserApplicationCommandData,
 } from 'discord.js'
 
@@ -34,6 +36,13 @@ export interface MessageCommand extends MessageApplicationCommandData {
 export interface UserCommand extends UserApplicationCommandData {
   isDevCommand: boolean
   run: (client: Client, interaction: ContextMenuInteraction) => Promise<void>
+}
+
+export interface ActivityOptions {
+  activities: ActivitiesOptions[]
+  afk?: boolean
+  shardId?: number | number[]
+  status: PresenceStatusData
 }
 
 export interface DeepLClass {

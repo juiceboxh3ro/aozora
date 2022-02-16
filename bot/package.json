@@ -7,7 +7,9 @@
   "private": false,
   "scripts": {
     "start": "node build/Bot.js",
-    "dev": "ts-node src/Bot.ts",
+    "watch": "tsc -w --skipLibCheck",
+    "_dev": "ts-node src/Bot.ts",
+    "dev": "nodemon build/Bot.js",
     "build": "tsc --skipLibCheck",
     "test": ""
   },
@@ -19,7 +21,7 @@
     "@discordjs/rest": "^0.2.0-canary.0",
     "@discordjs/voice": "^0.7.5",
     "axios": "^0.24.0",
-    "discord-api-types": "^0.26.1",
+    "discord-api-types": "^0.27.1",
     "discord.js": "^13.5.1",
     "dotenv": "^10.0.0",
     "graphql": "^16.2.0",
