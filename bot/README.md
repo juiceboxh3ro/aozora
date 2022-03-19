@@ -2,6 +2,7 @@
 
 ## Table of Contents
 * [About Aozora](#about-aozora)
+* [Invite Aozora](#invite-aozora)
 * [Slash Commands](#slash-commands)
 * [Technologies](#technologies)
 * [Setup](#setup)
@@ -12,6 +13,9 @@
 ## About Aozora
 Aozora is currently a primarily Japanese language learning utility bot.<br>
 Planned features include falling back to Google Translate if DeepL does not support a target language, raw Japanese text to text with furigana, pronunciation results for searched words, saving searched words to an exportable Anki deck, character recognition from images, etc. etc.
+
+## Invite Aozora
+
 
 ## Slash Commands
 - <code>/ping</code> - pong!

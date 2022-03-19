@@ -6,6 +6,7 @@ const Ping: SlashCommand = {
   description: 'Ping Pong Bing Bong',
   type: 'CHAT_INPUT',
   isDevCommand: true,
+  defaultPermission: false,
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     const content = 'Pong!'
 

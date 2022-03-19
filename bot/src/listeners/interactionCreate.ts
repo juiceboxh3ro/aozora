@@ -15,7 +15,7 @@ const handleSlashCommand = async (
 ): Promise<void> => {
   const _commands = [
     ...Commands.DevCommands,
-    ...Commands.GuildCommands,
+    ...Commands.GlobalCommands,
   ]
 
   const slashCommand = _commands.find((c) => c.name === interaction.commandName)

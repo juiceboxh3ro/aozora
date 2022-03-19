@@ -7,11 +7,12 @@ import interactionCreate from './interactionCreate'
 import chatCommandHandler from './chatCommandHandler'
 import updateStatus from './status'
 
-const DATABASE = process.env.DATABASE || ''
-const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || ''
-const DATABASE_NAME = process.env.DATABASE_NAME || ''
+const DATABASE = process.env.DATABASE ?? ''
+const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD ?? ''
+const DATABASE_NAME = process.env.DATABASE_NAME ?? ''
 const MONGO_URI = DATABASE.replace('<PASSWORD>', DATABASE_PASSWORD).replace('<NAME>', DATABASE_NAME)
-const AOZORA_GUILD_ID = process.env.AOZORA_GUILD_ID || ''
+const AOZORA_GUILD_ID = process.env.AOZORA_GUILD_ID ?? ''
+// const FZ_STAFF_GUILD_ID = process.env.FZ_STAFF_GUILD_ID ?? ''
 
 const dbOptions = {
   keepAlive: true,
@@ -45,6 +46,32 @@ const onBotSignin = (client: Client) => {
   }, 1000 * 15)
 }
 
+const setUpCommands = async (client: Client) => {
+  if (!client?.application) return
+
+  client.application.commands.set([])
+
+  const aozoraDevGuild = client.guilds.cache.get(AOZORA_GUILD_ID)
+  // const fzStaffGuild = client.guilds.cache.get(FZ_STAFF_GUILD_ID)
+
+  if (aozoraDevGuild) {
+    await aozoraDevGuild.commands.set(Commands.DevCommands)
+      .catch(console.error)
+  }
+
+  // if (fzStaffGuild) {
+  //   await fzStaffGuild.commands.set(Commands.FZStaffCommands)
+  //     .catch(console.error)
+  // }
+
+  await client.application.commands.set(Commands.GlobalCommands)
+    .catch((err) => {
+      console.error(err.requestData.json)
+      console.error(err.httpStatus)
+      console.error(err)
+    })
+}
+
 export default (client: Client): void => {
   client.on('ready', async () => {
     if (!client.user || !client.application) return
@@ -57,13 +84,11 @@ export default (client: Client): void => {
         console.log('🍂 Could not connect to MongoDB')
       })
 
-    interactionCreate(client)
+    setUpCommands(client)
     chatCommandHandler(client)
     onBotSignin(client)
+    interactionCreate(client)
 
-    await client.application.commands.set(Commands.DevCommands, AOZORA_GUILD_ID)
-    await client.application.commands.set(Commands.GuildCommands)
-
-    console.log(`🌳 ${client.user.username} is online`)
+    console.log(`🌳 ${client.user.username} is online from ${client.readyTimestamp}`)
   })
 }

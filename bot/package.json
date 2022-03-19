@@ -31,6 +31,7 @@
     "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "mongoose": "^6.1.6",
     "node-fetch": "^3.1.0",
+    "ramda": "^0.28.0",
     "wanakana": "^4.0.2"
   },
   "devDependencies": {

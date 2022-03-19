@@ -1,18 +1,27 @@
 import { SlashCommand, MessageCommand, UserCommand } from './typings/types'
-import Ping from './commands/Ping'
-import DeepL from './commands/deepl/DeepL'
-import AddFurigana from './commands/japanese/AddFurigana'
+import {
+  Ping,
+  DeepL,
+  AddFurigana,
+  InviteAozora,
+} from './commands/index'
 
 const DevCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
-  Ping
+  Ping,
+  InviteAozora,
 ]
 
-const GuildCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
+const FZStaffCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
+
+]
+
+const GlobalCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
+  AddFurigana,
   DeepL,
-  AddFurigana
 ]
 
 export default {
   DevCommands,
-  GuildCommands,
+  FZStaffCommands,
+  GlobalCommands,
 }
