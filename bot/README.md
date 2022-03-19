@@ -15,11 +15,12 @@ Aozora is currently a primarily Japanese language learning utility bot.<br>
 Planned features include falling back to Google Translate if DeepL does not support a target language, raw Japanese text to text with furigana, pronunciation results for searched words, saving searched words to an exportable Anki deck, character recognition from images, etc. etc.
 
 ## Invite Aozora
-
+[https://discord.com/api/oauth2/authorize?client_id=929991689978937414&permissions=532643441728&scope=applications.commands%20bot](Invite Link)
 
 ## Slash Commands
-- <code>/ping</code> - pong!
-- <code>/deepl/:word/:?target=JA/:?source=auto/:?furigana=boolean</code> - utilizes the DeepL.com API to translate your word into a target language, target is Japanese by default. Adding furigana to the returned translation is a work in progress.
+- <code>/deepl/:word/:?target</code> - utilizes the DeepL.com API to translate your word into a target language, target is Japanese by default. Adding furigana to the returned translation is a work in progress.
+- <code>/furigana/:token</code> - parses a Japanese word or phrase and injects furigana after kanji
+- <code>/invite</code> - send an invite link for Aozora bot
 
 ## Technologies
 Languages and packages used:

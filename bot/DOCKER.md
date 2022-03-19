@@ -63,7 +63,7 @@ pull the image
 - `sudo docker pull juiceboxh3ro/aozora:latest`
 - `
   sudo docker run \
-  --platform linux/amd64 \
+  --platform=linux/amd64 \
   -d --rm -p 80:80 \
   juiceboxh3ro/aozora:latest
   `

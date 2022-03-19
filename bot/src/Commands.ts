@@ -1,13 +1,11 @@
 import { SlashCommand, MessageCommand, UserCommand } from './typings/types'
 import {
-  Ping,
   DeepL,
   AddFurigana,
   InviteAozora,
 } from './commands/index'
 
 const DevCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
-  Ping,
   InviteAozora,
 ]
 
