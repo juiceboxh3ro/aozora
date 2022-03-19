@@ -30,6 +30,7 @@
 /build
 
 # misc
+/bot/DOCKER.md
 .DS_Store
 *.pem
 
