@@ -48,6 +48,8 @@
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-underscore-dangle": "off",
     "no-var-requires": "off",
+    "one-var": "off",
+    "one-var-declaration-per-line": "off",
     "quote-props": "off",
     "semi": "off",
     "skipBlankLines": 0

@@ -1,20 +1,6 @@
-import DiscordJS, { BaseCommandInteraction, Client, EmbedFieldData } from 'discord.js'
-import aozoraEmbedHandler from '../../util/aozoraEmbed'
-import DeepLAPI from '../../api/helpers/DeepL.api'
-
-import { AZR_EmbedHandler, SlashCommand } from '../../typings/types'
-
-/*
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
-const data = new SlashCommandBuilder()
-	.setName('echo')
-	.setDescription('Replies with your input!')
-	.addStringOption(option =>
-		option.setName('input')
-			.setDescription('The input to echo back')
-			.setRequired(true));
-*/
+import DiscordJS, { BaseCommandInteraction, Client } from 'discord.js'
+import withDeepLTranslate from '../withDeepLTranslate'
+import { SlashCommand } from '../../typings/types'
 
 const DeepL: SlashCommand = {
   name: 'deepl',
@@ -45,37 +31,12 @@ const DeepL: SlashCommand = {
     const { options } = interaction
 
     const token = options.get('translate', true).value!.toString()
-    const target = options.get('target', false)?.value?.toString() || ''
-    const source = options.get('source', false)?.value?.toString() || ''
-    const token_length_limit = 280
+    const target = options.get('target', false)?.value?.toString() ?? ''
+    const source = options.get('source', false)?.value?.toString() ?? ''
+    
+    const result = await withDeepLTranslate(token, target, source)
 
-    if (token.trim().length > token_length_limit) {
-      await interaction.editReply({
-        content: `Enter a shorter phrase, please! Your token is ${token.trim().length - token_length_limit} characters too long.`
-      })
-      return
-    }
-
-    const deepL = new DeepLAPI(token, target, source)
-    const translated = await deepL.translate()
-
-    const embed_options: AZR_EmbedHandler = {
-      author: {
-        name: 'DeepL Translation',
-        iconURL: `${process.env.BUCKET}/images/assets/deepl.jpg`,
-        url: 'https://www.deepl.com/translator',
-      },
-    }
-    if (!translated) {
-      await interaction.editReply('Something went wrong')
-      return
-    }
-    if (typeof translated === 'string') embed_options.description = translated
-    else embed_options.fields = translated as EmbedFieldData[]
-
-    const embed = aozoraEmbedHandler(embed_options)
-
-    await interaction.editReply({ embeds: [embed] })
+    await interaction.editReply(result)
   },
 }
 

@@ -54,10 +54,6 @@ const handleSlashCommand = async (
 export default (client: Client): void => {
   client.on('interactionCreate', async (interaction: Interaction) => {
     if (interaction.isCommand() || interaction.isContextMenu()) {
-      console.log('\n')
-      console.log('client:')
-      console.log(client)
-      console.log('\n')
       await handleSlashCommand(client, interaction)
     }
   })

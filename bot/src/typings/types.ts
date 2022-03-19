@@ -45,20 +45,11 @@ export interface ActivityOptions {
   status: PresenceStatusData
 }
 
-export interface DeepLClass {
-  token: string
-  translate: (arg0: string, arg1: string, arg2: string) => Promise<boolean | EmbedFieldData[]>
-}
-
 export interface DeepLResponse {
   translations: {
     text: string
     detected_source_language?: string
   }[]
-}
-
-export interface StringMap {
-  [key: string]: string
 }
 
 // ***************

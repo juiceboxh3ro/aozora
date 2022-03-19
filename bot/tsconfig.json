@@ -26,6 +26,7 @@
   ],
   "include": [
     "./**/*.ts",
+    "./src/*",
     "src/typings/kuroshiro.d.ts",
     "src/typings/kuroshiro-analyzer-kuromoji.d.ts",
   ],

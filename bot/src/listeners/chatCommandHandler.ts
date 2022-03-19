@@ -16,10 +16,6 @@ const CHAT_COMMANDS: {
  */
 export default (client: Client): void => {
   client.on('messageCreate', async (message: Message) => {
-    console.log('\n')
-    console.log('message:')
-    console.log(message)
-    console.log('\n')
     if (message.author.bot || message.author.system || !message.content.startsWith('!azr')) return
 
     const args: string[] = message.content.split(/ +/).slice(1)
