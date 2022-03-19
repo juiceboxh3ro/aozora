@@ -58,7 +58,7 @@ const deeplReducer = (token: string, data: DeepLResponse): EmbedFieldData[] => {
     fields.push({
       name: `"${token}"`,
       value: translation.text,
-      inline: true,
+      inline: data.translations.length > 1,
     })
   })
   return fields
@@ -71,7 +71,10 @@ const translate = async (token, target, source): Promise<string | EmbedFieldData
     !iso6391ToName(target, 'target')
     || (source.trim().length && !iso6391ToName(source, 'source'))
   ) {
-    translatedResult = `Unsupported source language: ${source}`
+    translatedResult = [{
+      name: `"${token}"`,
+      value: `Unsupported source "${source}" for "${token}"`,
+    }]
   } else {
     const _auth = `?auth_key=${DEEPL_API_KEY}`
     const _token = `&text=${token}`
@@ -86,7 +89,10 @@ const translate = async (token, target, source): Promise<string | EmbedFieldData
       const error = err as AxiosError
       console.error(error.name)
       console.error(error.message)
-      translatedResult = "Couldn't translate that 🤕"
+      translatedResult = [{
+        name: `"${token}"`,
+        value: "Couldn't translate that 🤕",
+      }]
     }
   }
 

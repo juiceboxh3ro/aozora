@@ -34,6 +34,12 @@ const onBotSignin = (client: Client) => {
   }, 1000 * 15)
 }
 
+const onError = (err) => {
+  console.error(err.requestData.json)
+  console.error(err.httpStatus)
+  console.error(err)
+}
+
 const setUpCommands = async (client: Client) => {
   if (!client?.application) return
 
@@ -45,21 +51,17 @@ const setUpCommands = async (client: Client) => {
   if (aozoraDevGuild) {
     await aozoraDevGuild.commands.set([])
     await aozoraDevGuild.commands.set(Commands.DevCommands)
-      .catch(console.error)
+      .catch(onError)
   }
 
   // if (fzStaffGuild) {
   //   await fzStaffGuild.commands.set(Commands.FZStaffCommands)
-  //     .catch(console.error)
+  //     .catch(onError)
   // }
 
   await client.application.commands.set([])
   await client.application.commands.set(Commands.GlobalCommands)
-    .catch((err) => {
-      console.error(err.requestData.json)
-      console.error(err.httpStatus)
-      console.error(err)
-    })
+    .catch(onError)
 }
 
 export default (client: Client): void => {
