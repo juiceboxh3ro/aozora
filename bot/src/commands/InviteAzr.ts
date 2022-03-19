@@ -1,4 +1,4 @@
-import DiscordJS, { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
+import { BaseCommandInteraction, Client } from 'discord.js'
 import { SlashCommand } from '../typings/types'
 
 const InviteAozora: SlashCommand = {

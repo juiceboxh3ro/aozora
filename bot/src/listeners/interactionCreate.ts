@@ -15,6 +15,7 @@ const handleSlashCommand = async (
 ): Promise<void> => {
   const _commands = [
     ...Commands.DevCommands,
+    ...Commands.FZStaffCommands,
     ...Commands.GlobalCommands,
   ]
 

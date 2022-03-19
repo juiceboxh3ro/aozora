@@ -1,5 +1,4 @@
 import { Client } from 'discord.js'
-import mongoose from 'mongoose'
 import { ActivityOptions } from 'src/typings/types'
 
 import Commands from '../Commands'
@@ -7,19 +6,8 @@ import interactionCreate from './interactionCreate'
 import chatCommandHandler from './chatCommandHandler'
 import updateStatus from './status'
 
-const DATABASE = process.env.DATABASE ?? ''
-const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD ?? ''
-const DATABASE_NAME = process.env.DATABASE_NAME ?? ''
-const MONGO_URI = DATABASE.replace('<PASSWORD>', DATABASE_PASSWORD).replace('<NAME>', DATABASE_NAME)
 const AOZORA_GUILD_ID = process.env.AOZORA_GUILD_ID ?? ''
 // const FZ_STAFF_GUILD_ID = process.env.FZ_STAFF_GUILD_ID ?? ''
-
-const dbOptions = {
-  keepAlive: true,
-  autoIndex: true,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}
 
 const onBotSignin = (client: Client) => {
   const statuses: ActivityOptions[] = [
@@ -55,6 +43,7 @@ const setUpCommands = async (client: Client) => {
   // const fzStaffGuild = client.guilds.cache.get(FZ_STAFF_GUILD_ID)
 
   if (aozoraDevGuild) {
+    await aozoraDevGuild.commands.set([])
     await aozoraDevGuild.commands.set(Commands.DevCommands)
       .catch(console.error)
   }
@@ -64,6 +53,7 @@ const setUpCommands = async (client: Client) => {
   //     .catch(console.error)
   // }
 
+  await client.application.commands.set([])
   await client.application.commands.set(Commands.GlobalCommands)
     .catch((err) => {
       console.error(err.requestData.json)
@@ -75,15 +65,6 @@ const setUpCommands = async (client: Client) => {
 export default (client: Client): void => {
   client.on('ready', async () => {
     if (!client.user || !client.application) return
-
-    await mongoose.connect(MONGO_URI || '', dbOptions)
-      .then(() => {
-        console.log('🍃 Connected to MongoDB')
-      })
-      .catch(() => {
-        console.log('🍂 Could not connect to MongoDB')
-      })
-
     setUpCommands(client)
     chatCommandHandler(client)
     onBotSignin(client)

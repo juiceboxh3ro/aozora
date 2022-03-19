@@ -1,13 +1,8 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client'
+import axios from 'axios'
 
-const uri = `${process.env.AOZORA_API_ENDPOINT}`
+const baseURL = `${process.env.AOZORA_API_ENDPOINT}`
 
-const client = new ApolloClient({
-  uri,
-  cache: new InMemoryCache(),
-  name: process.env.AOZORA_SECRET_NAME,
-  version: '0.1.0',
-  queryDeduplication: true,
+export default axios.create({
+  baseURL,
+  withCredentials: false,
 })
-
-export default client
