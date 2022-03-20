@@ -40,6 +40,12 @@ const handleSlashCommand = async (
       return
     }
 
+    // if (slashCommand.type === 'MESSAGE'
+    //   || slashCommand.type === 'CHAT_INPUT'
+    //   || slashCommand.type === 'USER'
+    //   ) {
+    // }
+
     await interaction.deferReply()
 
     slashCommand.run(client, interaction as any)
