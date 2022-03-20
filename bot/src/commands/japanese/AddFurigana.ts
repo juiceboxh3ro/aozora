@@ -27,24 +27,6 @@ const AddFurigana: SlashCommand = {
     }
 
     const content: string = await withFurigana(token)
-
-    // const embed = new MessageEmbed()
-    //   .setColor('#4D8DE6')
-    //   .setTitle('title')
-    //   .setURL('https://www.deepl.com/translator')
-    //   .setAuthor({
-    //     name: 'DeepL Translation',
-    //     iconURL: process.env.BUCKET + '/images/assets/deepl.jpg',
-    //     url: 'https://www.deepl.com/translator',
-    //   })
-    //   .setFooter({
-    //     text: 'Translation by DeepL',
-    //     iconURL: process.env.S3_BUCKET + '/images/assets/deepl.jpg',
-    //   })
-    //   .setTimestamp()
-    
-    // embed.setDescription(parsed)
-
     await interaction.editReply({ content })
   },
 }

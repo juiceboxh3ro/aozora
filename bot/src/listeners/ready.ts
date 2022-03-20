@@ -43,13 +43,10 @@ const onError = (err) => {
 const setUpCommands = async (client: Client) => {
   if (!client?.application) return
 
-  client.application.commands.set([])
-
   const aozoraDevGuild = client.guilds.cache.get(AOZORA_GUILD_ID)
   // const fzStaffGuild = client.guilds.cache.get(FZ_STAFF_GUILD_ID)
 
   if (aozoraDevGuild) {
-    await aozoraDevGuild.commands.set([])
     await aozoraDevGuild.commands.set(Commands.DevCommands)
       .catch(onError)
   }
@@ -59,7 +56,6 @@ const setUpCommands = async (client: Client) => {
   //     .catch(onError)
   // }
 
-  await client.application.commands.set([])
   await client.application.commands.set(Commands.GlobalCommands)
     .then(console.log)
     .catch(onError)

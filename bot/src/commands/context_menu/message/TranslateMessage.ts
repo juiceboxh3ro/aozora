@@ -16,7 +16,7 @@ const TranslateMessage: MessageCommand = {
     let result
     let reaction
     if (fetchMessage?.content.trim().length) {
-      const token = fetchMessage.content
+      const token = fetchMessage.content.replaceAll(/[_|~|*]/g, '')
       const isJA = isJapanese(token)
       const source = isJA ? 'JA' : 'EN'
       const target = !isJA ? 'JA' : 'EN-US'

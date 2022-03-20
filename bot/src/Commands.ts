@@ -1,14 +1,16 @@
 import { SlashCommand, MessageCommand, UserCommand } from './typings/types'
 import {
+  AddFurigana,
+  AddFuriganaMenu,
   DeepL,
   DeepLSupported,
-  AddFurigana,
   InviteAozora,
   TranslateMessage,
 } from './commands/index'
 
 const DevCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
   AddFurigana,
+  AddFuriganaMenu,
   DeepL,
   DeepLSupported,
   InviteAozora,
@@ -21,6 +23,7 @@ const FZStaffCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
 
 const GlobalCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
   AddFurigana,
+  AddFuriganaMenu,
   DeepL,
   DeepLSupported,
   TranslateMessage,

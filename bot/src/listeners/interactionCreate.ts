@@ -48,12 +48,12 @@ const handleSlashCommand = async (
 
     await interaction.deferReply()
 
-    slashCommand.run(client, interaction as any)
+    await slashCommand.run(client, interaction as any)
   } catch (err) {
     const error = err as DiscordAPIError
     console.error(error?.name)
     console.error(error?.message)
-    interaction.followUp({ content: `An error has occurred: ${error?.name}` })
+    await interaction.followUp({ content: `An error has occurred: ${error?.name}` })
   }
 }
 
