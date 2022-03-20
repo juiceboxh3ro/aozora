@@ -61,17 +61,34 @@ const setUpCommands = async (client: Client) => {
 
   await client.application.commands.set([])
   await client.application.commands.set(Commands.GlobalCommands)
+    .then(console.log)
     .catch(onError)
 }
 
 export default (client: Client): void => {
   client.on('ready', async () => {
-    if (!client.user || !client.application) return
+    if (!client.user || !client.application) {
+      console.log('bad client')
+      return
+    }
+
     setUpCommands(client)
-    chatCommandHandler(client)
     onBotSignin(client)
+    chatCommandHandler(client)
     interactionCreate(client)
 
-    console.log(`🌳 ${client.user.username} is online from ${client.readyTimestamp}`)
+    const readyAt = client.readyTimestamp ?? Date.now()
+    const onlineFrom = new Date(readyAt)
+      .toLocaleDateString('EN-US', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hourCycle: 'h24',
+      })
+
+    console.log(`🌳 ${client.user.username} is online from ${onlineFrom}`)
   })
 }

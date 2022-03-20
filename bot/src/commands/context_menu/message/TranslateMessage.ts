@@ -6,7 +6,7 @@ import withDeepLTranslate from '../../withDeepLTranslate'
 const TranslateMessage: MessageCommand = {
   name: 'Translate to / from JP',
   type: 'MESSAGE',
-  isDevCommand: true,
+  isDevCommand: false,
   run: async (
     client: Client,
     interaction: ContextMenuInteraction,
