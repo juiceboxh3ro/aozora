@@ -27,24 +27,25 @@
   <li>export user dictionary as CSV for use in Anki, Memrise(?), From Zero</li>
   <li>study saved words via normal flash cards or SRS flash cards</li>
 </ul>
-<ul>
-  <li>
-  <sup>1</sup>afaik Discord will send unverified emails through their OAuth, so to prevent hijacking of Aozora accounts a secure sign-in will first be required to then link Discord accounts.
-  </li>
-</ul>
+  <p><sup>1</sup>afaik Discord will send unverified emails through their OAuth, so to prevent hijacking of Aozora accounts a secure sign-in will first be required to then link Discord accounts.</p>
 </div>
 
 
 ## Slash Commands
-- <code>/deepl/:word/:?target/?:source</code>: utilizes the DeepL.com API to translate your word into a target language. Target is Japanese by default, source can be determined by DeepL.
-- <code>/furigana/:token</code>: parses a Japanese word or phrase (in message or embed) and injects furigana after kanji.
-- <code>/dpl_supported</code>: returns an embed with the languages that DeepL supports for translation.
-- DEV: <code>/invite</code>: send an invite link for Aozora bot.
+<ul>
+  <li><code>/deepl/:word/:?target/?:source</code>: utilizes the DeepL.com API to translate your word into a target language. Target is Japanese by default, source can be determined by DeepL.</li>
+  <li><code>/furigana/:token</code>: parses a Japanese word or phrase (in message or embed) and injects furigana after kanji.</li>
+  <li><code>/dpl_supported</code>: returns an embed with the languages that DeepL supports for translation.</li>
+  <li>DEV: <code>/invite</code>: send an invite link for Aozora bot.</li>
+</ul>
 
 ## Message Context Menu Commands
 <p>Message context menu refers to the menu displayed when right-clicking a message. These commands are nested under the `apps` sub-menu.</p>
-- <code>Add furigana to message</code>: Attempts to add furigana to the selected message.
-- <code>Translate to/from JP</code>: Translates the selected message to JP or EN based on the content.
+<ul>
+  <li><code>Add furigana to message</code>: Attempts to add furigana to the selected message.</li>
+  <li><code>Translate to/from JP</code>: Translates the selected message to JP or EN based on the content.</li>
+</ul>
+
 
 ## Technologies
 Created with:
