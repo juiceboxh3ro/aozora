@@ -1,33 +1,33 @@
 version: "3.8"
 services:
-  # api:
-  #   build: ./api
-  #   env_file:
-  #     - ./api/.env
-  #   ports:
-  #     - 4000:4000
-  #       external:internal
-  #   volumes:
-  #     - /api/node_modules
-  #   depends_on:
-  #     - bot
-  #     - client
-  bot:
-    build: ./bot
+  # Discord bot
+  articuno:
+    build: ./articuno
     restart: unless-stopped
     env_file:
-      - ./bot/.env
+      - ./articuno/.env
     ports:
       - '80:80'
     volumes:
       - /balti/node_modules
-  # client:
-  #   build: ./client
+  # zapdos(nextjs? flutter? react native?):
+  #   build: ./zapdos
   #   env_file:
-  #     - ./client/.env
+  #     - ./zapdos/.env
   #   ports:
   #     - 3000:3000
   #   volumes:
-  #     - /client/node_modules
+  #     - /zapdos/node_modules
   #   stdin_open: true
   #   tty: true
+# moltres (elixir/phoenix):
+  #   build: ./moltres
+  #   env_file:
+  #     - ./moltres/.env
+  #   ports:
+  #     - 4000:4000
+  #       external:internal
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - bot
+  #     - client

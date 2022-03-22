@@ -8,43 +8,36 @@ import { MessageCommand } from 'src/typings/types'
 import withFurigana from '../../../util/withFurigana'
 
 const embedWithFurigana = async (embed: MessageEmbed) => {
+  // const transform = R.evolve({
+  //   description: withFuri,
+  //   footer: { text: withFuri },
+  //   fields: R.map(R.evolve({ value: withFuri, name: withFuri }))
+  // })
+  // const evolved = R.map(transform, embeds)
   let copiedEmbed = { ...embed }
 
-  let _description
-  if (copiedEmbed?.description) {
-    _description = await withFurigana(copiedEmbed?.description)
-  }
+  let description
+  if (copiedEmbed?.description) description = await withFurigana(copiedEmbed?.description)
 
-  const _fields: EmbedField[] = []
+  let fields: EmbedField[] = []
   if (copiedEmbed?.fields?.length) {
-    const _fieldsNamesPromise = copiedEmbed.fields.map((field) => withFurigana(field.name))
-    const _fieldsValuesPromise = copiedEmbed.fields.map((field) => withFurigana(field.value))
+    const fieldsNamesPromise = copiedEmbed.fields.map((field) => withFurigana(field.name))
+    const fieldsValuesPromise = copiedEmbed.fields.map((field) => withFurigana(field.value))
+    const fieldNames = await Promise.all(fieldsNamesPromise)
+    const fieldValues = await Promise.all(fieldsValuesPromise)
 
-    const _fieldNames = await Promise.all(_fieldsNamesPromise)
-    const _fieldValues = await Promise.all(_fieldsValuesPromise)
-
-    copiedEmbed.fields.forEach((_, i) => {
-      _fields.push({
-        name: _fieldNames[i],
-        value: _fieldValues[i],
-        inline: _.inline,
-      })
-    })
+    fields = copiedEmbed.fields
+      .map((f, i) => ({ name: fieldNames[i], value: fieldValues[i], inline: f.inline }))
   }
 
-  let _footer
+  let footer
   if (copiedEmbed?.footer?.text) {
-    const _text = await withFurigana(copiedEmbed.footer.text)
-    _footer = { ...copiedEmbed.footer, text: _text }
+    const text = await withFurigana(copiedEmbed.footer.text)
+    footer = { ...copiedEmbed.footer, text }
   }
 
-  copiedEmbed = {
-    ...copiedEmbed,
-    description: _description,
-    fields: _fields,
-    footer: _footer,
-  }
-
+  copiedEmbed = { ...copiedEmbed, description, footer }
+  if (fields.length) copiedEmbed.fields = fields
   return copiedEmbed
 }
 
@@ -71,12 +64,14 @@ const AddFuriganaMenu: MessageCommand = {
     }
 
     if (embeds) {
-      const _embedsPromise = embeds.map((embed) => embedWithFurigana(embed))
-      const furiedEmbeds = await Promise.all(_embedsPromise)
+      const embedsPromise = embeds.map((embed) => embedWithFurigana(embed))
+      const furiedEmbeds = await Promise.all(embedsPromise)
 
       reaction = '✅'
       result = { ...result, embeds: furiedEmbeds }
     }
+
+    if (!content && !embeds) result = "I can't translate that"
 
     await interaction.editReply(result)
     await interaction.channel?.messages.react(interaction.targetId, reaction ?? '😵‍💫')

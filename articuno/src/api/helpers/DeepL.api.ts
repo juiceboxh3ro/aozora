@@ -64,12 +64,12 @@ const deeplReducer = (token: string, data: DeepLResponse): EmbedFieldData[] => {
   return fields
 }
 
-const translate = async (token, target, source): Promise<string | EmbedFieldData[]> => {
+const translate = async (token: string, target: string, source = ''): Promise<string | EmbedFieldData[]> => {
   let translatedResult
 
   if (
     !iso6391ToName(target, 'target')
-    || (source.trim().length && !iso6391ToName(source, 'source'))
+    || (source.trim().length && !iso6391ToName(source.toUpperCase(), 'source'))
   ) {
     translatedResult = [{
       name: `"${token}"`,
@@ -77,9 +77,9 @@ const translate = async (token, target, source): Promise<string | EmbedFieldData
     }]
   } else {
     const _auth = `?auth_key=${DEEPL_API_KEY}`
-    const _token = `&text=${token}`
-    const _target = `&target_lang=${target}`
-    const _source = source?.trim().length ? `&source_lang=${source}` : ''
+    const _token = `&text=${token.trim()}`
+    const _target = `&target_lang=${target.trim().toUpperCase()}`
+    const _source = source?.trim().length ? `&source_lang=${source.trim().toUpperCase()}` : ''
     const _query = `${DEEPL_URL}/translate${_auth}${_token}${_target}${_source}`
   
     try {

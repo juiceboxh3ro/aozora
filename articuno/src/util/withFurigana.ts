@@ -32,12 +32,7 @@ const withFurigana = async (token: string, options?: ConvertOptions): Promise<st
     }
   })
 
-  let converted
-  try {
-    converted = await Promise.all(preconvertedTokens)
-  } catch (err) {
-    console.error(err)
-  }
+  const converted = await Promise.all(preconvertedTokens)
 
   converted.forEach((cToken) => {
     const appendedFuri = cToken === token ? token : cToken
