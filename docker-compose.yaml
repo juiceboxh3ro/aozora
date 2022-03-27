@@ -10,7 +10,8 @@ services:
       - '80:80'
     volumes:
       - /balti/node_modules
-  # zapdos(nextjs? flutter? react native?):
+
+  # zapdos: # (nextjs? flutter? react native?)
   #   build: ./zapdos
   #   env_file:
   #     - ./zapdos/.env
@@ -20,7 +21,8 @@ services:
   #     - /zapdos/node_modules
   #   stdin_open: true
   #   tty: true
-# moltres (elixir/phoenix):
+
+  # moltres: # (elixir/phoenix)
   #   build: ./moltres
   #   env_file:
   #     - ./moltres/.env

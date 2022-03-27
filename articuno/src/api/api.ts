@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = `${process.env.AOZORA_API_ENDPOINT}`
+const baseURL = `${process.env.MOLTRES}`
 
 export default axios.create({
   baseURL,
