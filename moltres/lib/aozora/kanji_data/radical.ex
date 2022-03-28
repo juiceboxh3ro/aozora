@@ -11,7 +11,6 @@ defmodule Aozora.KanjiData.Radical do
     field :stroke_count, :integer
     field :variant_of, :string
     field :important, :boolean
-    # :mnemonics, :map, default: %{}
 
     many_to_many :kanji, Aozora.KanjiData.Kanji, join_through: "kanji_radicals", on_replace: :delete
 
@@ -21,7 +20,7 @@ defmodule Aozora.KanjiData.Radical do
   @doc false
   def changeset(radical, attrs) do
     radical
-    |> cast(attrs, [:bushu, :jp_name, :en_name, :meaning])
-    |> validate_required([:bushu, :jp_name, :en_name, :meaning])
+    |> cast(attrs, [:bushu, :jp_name, :en_name, :meaning, :position, :stroke_count, :variant_of, :important])
+    |> validate_required([:bushu])
   end
 end

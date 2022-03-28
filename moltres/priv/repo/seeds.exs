@@ -28,7 +28,8 @@ with {:ok, body} <- File.read(json_file),
       %{ english: english } = meaning
       %{ hiragana: name } = name
       %{ hiragana: position } = position
-      # references_changeset = %{ classic_nelson: classic_nelson, grade: grade, kodansha: kodansha }
+
+      %{ classic_nelson: classic_nelson, grade: grade, kodansha: kodansha } = references
 
       # TODO:
       # get radical ID, save to KanjiData
@@ -37,13 +38,13 @@ with {:ok, body} <- File.read(json_file),
       # TODO:
       # add logic for kanji_radicals intermediary table
 
-      # {:ok, rad} = Aozora.KanjiData.Radical.insert(radical_changeset)
+      # {:ok, r} = Aozora.KanjiData.Radical.insert(radical_changeset)
 
-      # {:ok, _} = Aozora.KanjiData.create_kanji(%{ character: character, kunyomi: hiragana, onyomi: katakana, strokes: count })
+      {:ok, k} = Aozora.KanjiData.create_kanji(%{ character: character, kunyomi: hiragana, onyomi: katakana, strokes: count, classic_nelson: classic_nelson, grade: grade, kodansha: kodansha })
 
       # for ex <- examples do
       #   examples_changeset = %{ japanese: ex.japanese, english: ex.meaning.english }
-      #   {:ok, _} = Aozora.KanjiData.Example.insert!(examples_changeset)
+      #   {:ok, e} = Aozora.KanjiData.Example.insert!(examples_changeset)
       # end
 else
   err ->

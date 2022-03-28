@@ -6,10 +6,10 @@ defmodule AozoraWeb.ExampleController do
 
   action_fallback AozoraWeb.FallbackController
 
-  # def index(conn, _params) do
-  #   examples = KanjiData.list_examples()
-  #   render(conn, "index.json", examples: examples)
-  # end
+  def index(conn, _params) do
+    examples = KanjiData.list_examples()
+    render(conn, "index.json", examples: examples)
+  end
 
   def create(conn, %{"example" => example_params}) do
     with {:ok, %Example{} = example} <- KanjiData.create_example(example_params) do
@@ -20,10 +20,10 @@ defmodule AozoraWeb.ExampleController do
     end
   end
 
-  # def show(conn, %{"id" => id}) do
-  #   example = KanjiData.get_example!(id)
-  #   render(conn, "show.json", example: example)
-  # end
+  def show(conn, %{"id" => id}) do
+    example = KanjiData.get_example!(id)
+    render(conn, "show.json", example: example)
+  end
 
   def update(conn, %{"id" => id, "example" => example_params}) do
     example = KanjiData.get_example!(id)

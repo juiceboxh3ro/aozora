@@ -20,6 +20,11 @@ defmodule AozoraWeb.KanjiController do
   #   end
   # end
 
+  def show_character(conn, %{"character" => character}) do
+    kanji = KanjiData.get_kanji_by_character(character)
+    render(conn, "show.json", kanji: kanji)
+  end
+
   def show(conn, %{"id" => id}) do
     kanji = KanjiData.get_kanji!(id)
     render(conn, "show.json", kanji: kanji)

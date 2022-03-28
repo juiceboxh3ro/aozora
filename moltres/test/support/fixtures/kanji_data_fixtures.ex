@@ -16,7 +16,15 @@ defmodule Aozora.KanjiDataFixtures do
         stroke_count: "6",
         onyomi: "ジ",
         kunyomi: "アザ,アザナ,-ナ",
-        metadata: %{},
+        jlpt: 5,
+        grade: nil,
+        kodansha: nil,
+        wanikani: nil,
+        frequency: nil,
+        naritachi: nil,
+        classic_nelson: nil,
+        radical_types: nil,
+        radical_positions: nil,
       })
       |> Aozora.KanjiData.create_kanji()
 

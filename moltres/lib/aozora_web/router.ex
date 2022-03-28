@@ -8,10 +8,12 @@ defmodule AozoraWeb.Router do
   scope "/api", AozoraWeb do
     pipe_through :api
 
-    resources "/kanji", KanjiController, only: [:index, :show, :update] do
-      resources "/examples", ExampleController, only: [:create, :update, :delete]
-    end
-    resources "/radicals", KanjiController, only: [:index, :show, :update]
+    resources "/kanji", KanjiController, except: [:new, :edit]
+    resources "/kanji/examples", ExampleController, except: [:new, :edit]
+    resources "/radicals", RadicalController, except: [:new, :edit]
+
+    get "/kanji/char/:character", KanjiController, :show_character
+
   end
 
   # Enables LiveDashboard only for development

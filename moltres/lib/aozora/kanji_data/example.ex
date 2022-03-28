@@ -18,5 +18,6 @@ defmodule Aozora.KanjiData.Example do
     example
     |> cast(attrs, [:japanese, :english])
     |> validate_required([:japanese, :english])
+    |> assoc_constraint(:kanji)
   end
 end

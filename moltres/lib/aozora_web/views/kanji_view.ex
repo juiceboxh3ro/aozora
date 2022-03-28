@@ -19,15 +19,13 @@ defmodule AozoraWeb.KanjiView do
       kunyomi: kanji.kunyomi,
       onyomi: kanji.onyomi,
       stroke_count: kanji.stroke_count,
-      metadata: %{
-        classic_nelson: kanji.metadata.classic_nelson,
-        frequency: kanji.metadata.frequency,
-        grade: kanji.metadata.grade,
-        jlpt: kanji.metadata.jlpt,
-        kodansha: kanji.metadata.kodansha,
-        naritachi: kanji.metadata.naritachi,
-        wanikani: kanji.metadata.wanikani,
-      }
+      classic_nelson: kanji.classic_nelson,
+      frequency: kanji.frequency,
+      grade: kanji.grade,
+      jlpt: kanji.jlpt,
+      kodansha: kanji.kodansha,
+      naritachi: kanji.naritachi,
+      wanikani: kanji.wanikani,
     }
   end
 end

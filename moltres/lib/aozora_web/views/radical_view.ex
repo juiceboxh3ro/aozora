@@ -16,7 +16,11 @@ defmodule AozoraWeb.RadicalView do
       bushu: radical.bushu,
       jp_name: radical.jp_name,
       en_name: radical.en_name,
-      meaning: radical.meaning
+      meaning: radical.meaning,
+      position: radical.position,
+      stroke_count: radical.stroke_count,
+      variant_of: radical.variant_of,
+      important: radical.important,
     }
   end
 end

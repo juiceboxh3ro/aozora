@@ -6,7 +6,7 @@ defmodule Aozora.KanjiData do
   import Ecto.Query, warn: false
   alias Aozora.Repo
 
-  alias Aozora.KanjiData.Kanji
+  alias Aozora.KanjiData.{Kanji, Radical, Example}
 
   @doc """
   Returns the list of kanji.
@@ -19,6 +19,16 @@ defmodule Aozora.KanjiData do
   """
   def list_kanji do
     Repo.all(Kanji)
+  end
+
+  # defp list_kanji_by_id(nil), do: []
+  # defp list_kanji_by_id(kanji_ids) do
+  #   Repo.all(from k in Kanji, where: k.id in ^kanji_ids)
+  # end
+
+  defp list_kanji_by_character(nil), do: []
+  defp list_kanji_by_character(%{ "kanji" => kanji }) do
+    Repo.one(from k in Kanji, where: k.character == ^kanji)
   end
 
   @doc """
@@ -42,6 +52,26 @@ defmodule Aozora.KanjiData do
     |> Repo.preload(:radicals)
   end
 
+  def get_kanji_by_character(kanji) do
+    Repo.one(
+      from(k in Kanji,
+        where: k.character == ^kanji,
+        left_join: e in assoc(k, :examples),
+        left_join: r in assoc(k, :radicals),
+        preload: [:radicals],
+        preload: [:examples]
+      )
+    )
+  end
+
+  def add_example_to_kanji(%Kanji{} = kanji, %Example{} = example) do
+    kanji
+    |> Kanji.changeset(%{})
+    |> Ecto.Changeset.put_assoc(:examples, example)
+    |> Ecto.Changeset.put_assoc(:kanji, kanji)
+    |> Repo.update()
+  end
+
   @doc """
   Creates a kanji.
 
@@ -58,6 +88,10 @@ defmodule Aozora.KanjiData do
     %Kanji{}
     |> Kanji.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, %Kanji{} = kanji} -> {:ok, Repo.preload(kanji, :radicals)}
+      error -> error
+    end
   end
 
   @doc """
@@ -107,7 +141,7 @@ defmodule Aozora.KanjiData do
     Kanji.changeset(kanji, attrs)
   end
 
-  alias Aozora.KanjiData.Radical
+
 
   @doc """
   Returns the list of radicals.
@@ -121,6 +155,17 @@ defmodule Aozora.KanjiData do
   def list_radicals do
     Repo.all(Radical)
   end
+
+  # defp list_radical_by_id(nil), do: []
+  # defp list_radical_by_id(radical) do
+  #   Repo.all(from r in Radical, where: r.id in ^radical)
+  # end
+
+  # TODO:
+  # defp list_radical_by_character(nil), do: []
+  # defp list_radical_by_character(radical) do
+  #   Repo.all(from r in Radical, where: r.character in ^radical)
+  # end
 
   @doc """
   Gets a single radical.
@@ -170,7 +215,7 @@ defmodule Aozora.KanjiData do
   """
   def update_radical(%Radical{} = radical, attrs) do
     radical
-    |> Radical.changeset(attrs)
+    |> change_radical(attrs)
     |> Repo.update()
   end
 
@@ -200,10 +245,15 @@ defmodule Aozora.KanjiData do
 
   """
   def change_radical(%Radical{} = radical, attrs \\ %{}) do
-    Radical.changeset(radical, attrs)
-  end
+    kanji = list_kanji_by_character(%{"kanji" => attrs})
 
-  alias Aozora.KanjiData.Example
+    IO.inspect(kanji)
+
+    radical
+    |> Repo.preload(:kanji)
+    |> Radical.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:kanji, kanji)
+  end
 
   @doc """
   Returns the list of examples.
@@ -235,19 +285,20 @@ defmodule Aozora.KanjiData do
   def get_example!(id), do: Repo.get!(Example, id)
 
   @doc """
-  Creates a example.
+  Creates a example and assigns it to a kanji.
 
   ## Examples
 
-      iex> create_example(%{field: value})
+      iex> create_example(%Kanji{}, %{english: "this is the example"})
       {:ok, %Example{}}
 
-      iex> create_example(%{field: bad_value})
+      iex> create_example(%Kanji{}, %{english: false})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_example(attrs \\ %{}) do
-    %Example{}
+  def create_example(%Kanji{} = kanji, attrs \\ %{}) do
+    kanji
+    |> Ecto.build_assoc(:examples)
     |> Example.changeset(attrs)
     |> Repo.insert()
   end
@@ -257,16 +308,16 @@ defmodule Aozora.KanjiData do
 
   ## Examples
 
-      iex> update_example(example, %{field: new_value})
+      iex> update_example(example, %{japanese: "日本語です"})
       {:ok, %Example{}}
 
-      iex> update_example(example, %{field: bad_value})
+      iex> update_example(example, %{japanese: 24})
       {:error, %Ecto.Changeset{}}
 
   """
   def update_example(%Example{} = example, attrs) do
     example
-    |> Example.changeset(attrs)
+    |> change_example(attrs)
     |> Repo.update()
   end
 
