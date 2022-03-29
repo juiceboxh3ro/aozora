@@ -4,4 +4,5 @@
     "./moltres",
     "./zapdos",
   ],
+  "elixirLS.projectDir": "./moltres",
 }
