@@ -13,7 +13,6 @@ defmodule AozoraWeb.Router do
     resources "/radicals", RadicalController, except: [:new, :edit]
 
     get "/kanji/char/:character", KanjiController, :show_character
-
   end
 
   # Enables LiveDashboard only for development

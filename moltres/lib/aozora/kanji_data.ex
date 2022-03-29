@@ -5,8 +5,65 @@ defmodule Aozora.KanjiData do
 
   import Ecto.Query, warn: false
   alias Aozora.Repo
-
   alias Aozora.KanjiData.{Kanji, Radical, Example}
+
+  @doc """
+  Check if list contains only integers or strings.
+
+  ## Examples
+
+      iex> is_int_or_str(["string", 2])
+      true
+
+      iex> is_int_or_str(%{})
+      false
+  """
+  def is_int_or_str(list) do
+    list |> Enum.all?(fn item -> is_integer(item) or is_bitstring(item) end)
+  end
+
+ @doc """
+  Groups list items passed in from params by integer or string.
+
+  ## Examples
+
+      iex> check_list_item_types(["一", 2])
+      {false: ["一"], true: [2]}
+
+      iex> check_list_item_types()
+      []
+  """
+  def check_list_item_types(nil), do: []
+  def check_list_item_types(list) do
+    if Enum.any?(list) and is_int_or_str(list) do
+      list |> Enum.group_by(fn item -> is_integer(item) end)
+    else
+      []
+    end
+  end
+
+  @doc """
+  Returns a list of kanji by id or character from a grouped list.
+
+  ## Examples
+
+    iex> get_kanji_by_id_or_string({ false: ["一"], true: [2] })
+    [%Kanji{ id: 1, character: "一", ... }, %Kanji{ id: 2, character: "二", ... }]
+
+    iex> get_kanji_by_id_or_string({ true: [2] })
+    [%Kanji{ id: 2, character: "二", ...}]
+
+    iex> get_kanji_by_id_or_string()
+    []
+  """
+  def get_kanji_by_id_or_string(grouped) do
+    ids_result = list_kanji_by_id(grouped[:true])
+
+    # TODO: check if characters in range of kanji unicode
+    chars_result = list_kanji_by_character(grouped[:false])
+
+    ids_result ++ chars_result
+  end
 
   @doc """
   Returns the list of kanji.
@@ -18,17 +75,20 @@ defmodule Aozora.KanjiData do
 
   """
   def list_kanji do
-    Repo.all(Kanji)
+    Kanji
+    |> Repo.all
+    |> Repo.preload(:examples)
+    |> Repo.preload(:radicals)
   end
 
-  # defp list_kanji_by_id(nil), do: []
-  # defp list_kanji_by_id(kanji_ids) do
-  #   Repo.all(from k in Kanji, where: k.id in ^kanji_ids)
-  # end
+  defp list_kanji_by_id(nil), do: []
+  defp list_kanji_by_id(kanji_ids) do
+    Repo.all(from k in Kanji, where: k.id in ^kanji_ids)
+  end
 
   defp list_kanji_by_character(nil), do: []
-  defp list_kanji_by_character(%{ "kanji" => kanji }) do
-    Repo.one(from k in Kanji, where: k.character == ^kanji)
+  defp list_kanji_by_character(kanji) do
+    Repo.all(from k in Kanji, where: k.character in ^kanji)
   end
 
   @doc """
@@ -53,7 +113,7 @@ defmodule Aozora.KanjiData do
   end
 
   def get_kanji_by_character(kanji) do
-    Repo.one(
+    kanji = Repo.one(
       from(k in Kanji,
         where: k.character == ^kanji,
         left_join: e in assoc(k, :examples),
@@ -62,6 +122,7 @@ defmodule Aozora.KanjiData do
         preload: [:examples]
       )
     )
+    IO.inspect(kanji)
   end
 
   def add_example_to_kanji(%Kanji{} = kanji, %Example{} = example) do
@@ -141,8 +202,6 @@ defmodule Aozora.KanjiData do
     Kanji.changeset(kanji, attrs)
   end
 
-
-
   @doc """
   Returns the list of radicals.
 
@@ -156,16 +215,15 @@ defmodule Aozora.KanjiData do
     Repo.all(Radical)
   end
 
-  # defp list_radical_by_id(nil), do: []
-  # defp list_radical_by_id(radical) do
-  #   Repo.all(from r in Radical, where: r.id in ^radical)
-  # end
+  defp list_radical_by_id(nil), do: []
+  defp list_radical_by_id(radical) do
+    Repo.all(from r in Radical, where: r.id in ^radical)
+  end
 
-  # TODO:
-  # defp list_radical_by_character(nil), do: []
-  # defp list_radical_by_character(radical) do
-  #   Repo.all(from r in Radical, where: r.character in ^radical)
-  # end
+  defp list_radical_by_character(nil), do: []
+  defp list_radical_by_character(radical) do
+    Repo.all(from r in Radical, where: r.character in ^radical)
+  end
 
   @doc """
   Gets a single radical.
@@ -245,9 +303,7 @@ defmodule Aozora.KanjiData do
 
   """
   def change_radical(%Radical{} = radical, attrs \\ %{}) do
-    kanji = list_kanji_by_character(%{"kanji" => attrs})
-
-    IO.inspect(kanji)
+    kanji = check_list_item_types(attrs["kanji"]) |> get_kanji_by_id_or_string
 
     radical
     |> Repo.preload(:kanji)

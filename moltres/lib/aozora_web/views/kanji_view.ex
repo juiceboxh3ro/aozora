@@ -1,7 +1,7 @@
 defmodule AozoraWeb.KanjiView do
   use AozoraWeb, :view
 
-  alias AozoraWeb.KanjiView
+  alias AozoraWeb.{ExampleView, KanjiView, RadicalView}
 
   def render("index.json", %{kanji: kanji}) do
     %{data: render_many(kanji, KanjiView, "kanji.json")}
@@ -14,18 +14,33 @@ defmodule AozoraWeb.KanjiView do
   def render("kanji.json", %{kanji: kanji}) do
     %{
       id: kanji.id,
-      character: kanji.character,
-      en_meaning: kanji.en_meaning,
-      kunyomi: kanji.kunyomi,
-      onyomi: kanji.onyomi,
-      stroke_count: kanji.stroke_count,
-      classic_nelson: kanji.classic_nelson,
-      frequency: kanji.frequency,
-      grade: kanji.grade,
-      jlpt: kanji.jlpt,
-      kodansha: kanji.kodansha,
-      naritachi: kanji.naritachi,
-      wanikani: kanji.wanikani,
+      inserted_at: kanji.inserted_at,
+      updated_at: kanji.updated_at,
+      kanji: %{
+        character: kanji.character,
+        en_meaning: kanji.en_meaning,
+        kunyomi: kanji.kunyomi,
+        onyomi: kanji.onyomi,
+        stroke_count: kanji.stroke_count,
+      },
+      study_levels: %{
+        classic_nelson: kanji.classic_nelson,
+        frequency: kanji.frequency,
+        # from_zero: kanji.from_zero_book,
+        # genki: kanji.genki_book,
+        # tobira: kanji.tobira_book,
+        grade: kanji.grade,
+        jlpt: kanji.jlpt,
+        kodansha: kanji.kodansha,
+        wanikani: kanji.wanikani,
+      },
+      composition_info: %{
+        naritachi: kanji.naritachi,
+        radical_positions: kanji.radical_positions,
+        radical_types: kanji.radical_types,
+        radicals: render_many(kanji.radicals, RadicalView, "radical.json")
+      },
+      examples: render_many(kanji.examples, ExampleView, "example.json"),
     }
   end
 end

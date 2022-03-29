@@ -25,10 +25,10 @@ defmodule AozoraWeb.RadicalController do
     render(conn, "show.json", radical: radical)
   end
 
-  def update(conn, %{"id" => id, "radical" => radical_params} = params) do
+  def update(conn, %{"id" => id} = params) do
     radical = KanjiData.get_radical!(id)
 
-    with {:ok, %Radical{} = radical} <- KanjiData.update_radical(radical, radical_params) do
+    with {:ok, %Radical{} = radical} <- KanjiData.update_radical(radical, params) do
       render(conn, "show.json", radical: radical)
     end
   end

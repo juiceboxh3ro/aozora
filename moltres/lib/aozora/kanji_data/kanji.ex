@@ -39,8 +39,8 @@ defmodule Aozora.KanjiData.Kanji do
     kanji
     |> cast(attrs, [:character, :en_meaning, :stroke_count, :onyomi, :kunyomi])
     |> validate_required([:character])
-    |> validate_length([:character], max: 1)
-    |> validate_length([:stroke_count], min: 1, max: 99)
+    |> validate_length(:character, max: 1)
+    |> validate_length(:stroke_count, min: 1, max: 99)
     |> unique_constraint(:character)
     |> cast_assoc(:radicals)
     # |> cast_embed([:metadata, :radical_info])
