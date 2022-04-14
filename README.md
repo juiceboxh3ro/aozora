@@ -48,18 +48,16 @@ Message context menu refers to the menu displayed when right-clicking a message 
 </ul>
 
 ## Technologies
-Created with:
-* Discord.js
-* Kuroshiro
-* TypeScript
-* Wanakana
+Created with (major packages):
+* Discord bot<sup>1</sup>: Discord.js 13.5.1 / Kuroshiro 1.2.0 / TypeScript 4.5.4 / Wanakana 4.0.2
+* API<sup>2</sup>: Elixir 1.13.3 / Phoenix 1.6.6
 
 To be added:
-* API<sup>2</sup>: Elixir 1.13.3 / Phoenix 1.6.6 / Postgres
-* Client<sup>3</sup>: Nextjs ?? React Native ?? Flutter
+* Client<sup>3</sup>: Nextjs
+
 ## Setup
 Refer to the individual service folders (named after legendary bird Pokémon) within this repo for steps on how to set them up.
-* Articuno: Discord bot
+* <sup>1</sup>Articuno: Discord bot
 * <sup>2</sup>Moltres: Phoenix API
 * <sup>3</sup>Zapdos: user-facing client
 

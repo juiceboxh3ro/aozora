@@ -4,6 +4,7 @@
 * [About Aozora](#about-aozora)
 * [Invite Aozora](#invite-aozora)
 * [Slash Commands](#slash-commands)
+* [Planned Features](#planned-features)
 * [Technologies](#technologies)
 * [Setup](#setup)
 * [Environment Variables](#environment-variables)
@@ -22,6 +23,22 @@ Planned features include falling back to Google Translate if DeepL does not supp
 - <code>/furigana/:token</code> - parses a Japanese word or phrase and injects furigana after kanji
 - <code>/invite</code> - send an invite link for Aozora bot
 
+## Planned Features
+- Google Translate support
+- savings searched translations results
+- OCR for images with non-English text
+- Kana / Kanji / Hangul Typer game 
+- - NOTES FOR SELF:
+- - collect ping for each MessageCollection to more accurately judge response speed
+- - on game end:
+- - show average ping of Discord → API
+- - show total answered
+- - total asked
+- - total answered correctly out of total asked
+- - total answered correctly out of responded
+- - show question history
+- - ephemeral: show user's responses per question?
+- DM user on Discord on Flash Card review ready?
 ## Technologies
 Languages and packages used:
 * Discord.js

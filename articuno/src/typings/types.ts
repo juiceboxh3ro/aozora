@@ -45,6 +45,12 @@ export interface ActivityOptions {
   status: PresenceStatusData
 }
 
+export interface AttachmentsObj {
+  author?: string
+  proxyURL?: string
+  id?: string
+}
+
 export interface DeepLResponse {
   translations: {
     text: string

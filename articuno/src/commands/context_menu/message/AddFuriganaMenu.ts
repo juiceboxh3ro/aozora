@@ -2,10 +2,27 @@ import {
   Client,
   ContextMenuInteraction,
   EmbedField,
+  MessageAttachment,
   MessageEmbed,
+  User,
 } from 'discord.js'
-import { MessageCommand } from 'src/typings/types'
+import { Image } from 'aws-sdk/clients/rekognition'
+import { AttachmentsObj, MessageCommand } from 'src/typings/types'
+import downloadImage from '../../../util/downloadImage'
+import withRekognition from '../../../util/withRekognition'
 import withFurigana from '../../../util/withFurigana'
+
+const attachmentWithFurigana = async (attachment: AttachmentsObj): Promise<string> => {
+  const _attachment = attachment.proxyURL!
+
+  const imageBuffer: Image | null = await downloadImage(_attachment)
+  let rekognized: string[] = []
+  if (imageBuffer) rekognized = await withRekognition(imageBuffer)
+
+  console.log(rekognized)
+  
+  return 'ok'
+}
 
 const embedWithFurigana = async (embed: MessageEmbed) => {
   // const transform = R.evolve({
@@ -50,9 +67,27 @@ const AddFuriganaMenu: MessageCommand = {
     interaction: ContextMenuInteraction,
   ): Promise<void> => {
     const fetchMessage = await interaction.channel?.messages.fetch(interaction.targetId)
+    const author: User | undefined = fetchMessage?.author
 
     const content: string | null = fetchMessage?.content.trim().length ? fetchMessage.content : null
     const embeds: MessageEmbed[] | null = fetchMessage?.embeds.length ? fetchMessage.embeds : null
+    
+    let attachments: AttachmentsObj[] | undefined = []
+    const allowedAttachments = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp']
+
+    if (fetchMessage?.attachments) {
+      attachments = fetchMessage.attachments
+        .map(({ contentType, id, proxyURL }: MessageAttachment) => {
+          if (contentType && allowedAttachments.includes(contentType)) {
+            return ({
+              author: author?.id,
+              id,
+              proxyURL,
+            })
+          }
+          return ({})
+        })
+    }
 
     let result = {}
     let reaction: string | null = null
@@ -71,7 +106,12 @@ const AddFuriganaMenu: MessageCommand = {
       result = { ...result, embeds: furiedEmbeds }
     }
 
-    if (!content && !embeds) result = "I can't translate that"
+    // let parsedAttachment: Promise<string>
+    // if (attachments.length) {
+    //   parsedAttachment = attachmentWithFurigana(attachments[0])
+    // }
+
+    if (!content && !embeds) result = "I can't translate that message 🤕"
 
     await interaction.editReply(result)
     await interaction.channel?.messages.react(interaction.targetId, reaction ?? '😵‍💫')

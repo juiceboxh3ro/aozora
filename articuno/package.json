@@ -19,6 +19,7 @@
   "dependencies": {
     "@discordjs/rest": "^0.2.0-canary.0",
     "@discordjs/voice": "^0.7.5",
+    "aws-sdk": "2.1113.0",
     "axios": "^0.24.0",
     "discord-api-types": "^0.27.1",
     "discord.js": "^13.5.1",

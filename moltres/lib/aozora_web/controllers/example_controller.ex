@@ -11,8 +11,10 @@ defmodule AozoraWeb.ExampleController do
     render(conn, "index.json", examples: examples)
   end
 
-  def create(conn, %{"example" => example_params}) do
-    with {:ok, %Example{} = example} <- KanjiData.create_example(example_params) do
+  def create(conn, %{"example" => example_params, "kanji_id" => kanji_id}) do
+    kanji = KanjiData.get_kanji!(kanji_id)
+
+    with {:ok, %Example{} = example} <- KanjiData.create_example(%{ example: example_params, kanji: kanji }) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.example_path(conn, :show, example))

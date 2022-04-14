@@ -10,6 +10,10 @@ defmodule AozoraWeb.RadicalView do
     %{data: render_one(radical, RadicalView, "radical.json")}
   end
 
+  def render("show_relationship.json", %{radical: radical}) do
+    %{data: render_one(radical, RadicalView, "relationship.json")}
+  end
+
   def render("radical.json", %{radical: radical}) do
     %{
       id: radical.id,
@@ -19,8 +23,21 @@ defmodule AozoraWeb.RadicalView do
       meaning: radical.meaning,
       position: radical.position,
       stroke_count: radical.stroke_count,
-      variant_of: radical.variant_of,
+      variant: radical.variant,
       important: radical.important,
+      frequency: radical.frequency,
+      hangul: radical.hangul,
+      han_viet: radical.han_viet,
+      pinyin: radical.pinyin,
+      number: radical.number,
+      simplified: radical.simplified,
+    }
+  end
+
+  def render("relationship.json", %{result: result}) do
+    %{
+      radical: result.radical,
+      kanji: result.kanji,
     }
   end
 end

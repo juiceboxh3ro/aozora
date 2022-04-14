@@ -10,9 +10,15 @@ defmodule AozoraWeb.Router do
 
     resources "/kanji", KanjiController, except: [:new, :edit]
     resources "/kanji/examples", ExampleController, except: [:new, :edit]
+
+    get "/list_kanji/:character", KanjiController, :show_character
+    post "/list_kanji", KanjiController, :show_many_characters
+
     resources "/radicals", RadicalController, except: [:new, :edit]
 
-    get "/kanji/char/:character", KanjiController, :show_character
+    get "/list_radical/:bushu", RadicalController, :show_by_bushu
+    post "/list_radicals", RadicalController, :list_by_bushu
+
   end
 
   # Enables LiveDashboard only for development

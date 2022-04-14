@@ -36,8 +36,6 @@ defmodule AozoraWeb.KanjiView do
       },
       composition_info: %{
         naritachi: kanji.naritachi,
-        radical_positions: kanji.radical_positions,
-        radical_types: kanji.radical_types,
         radicals: render_many(kanji.radicals, RadicalView, "radical.json")
       },
       examples: render_many(kanji.examples, ExampleView, "example.json"),

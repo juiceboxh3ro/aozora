@@ -77,8 +77,7 @@ defmodule Aozora.KanjiData do
   def list_kanji do
     Kanji
     |> Repo.all
-    |> Repo.preload(:examples)
-    |> Repo.preload(:radicals)
+    |> Repo.preload([:radicals, :examples])
   end
 
   defp list_kanji_by_id(nil), do: []
@@ -108,12 +107,11 @@ defmodule Aozora.KanjiData do
   def get_kanji!(id) do
     Kanji
     |> Repo.get!(id)
-    |> Repo.preload(:examples)
-    |> Repo.preload(:radicals)
+    |> Repo.preload([:radicals, :examples])
   end
 
   def get_kanji_by_character(kanji) do
-    kanji = Repo.one(
+    Repo.one(
       from(k in Kanji,
         where: k.character == ^kanji,
         left_join: e in assoc(k, :examples),
@@ -122,15 +120,19 @@ defmodule Aozora.KanjiData do
         preload: [:examples]
       )
     )
-    IO.inspect(kanji)
   end
 
-  def add_example_to_kanji(%Kanji{} = kanji, %Example{} = example) do
-    kanji
-    |> Kanji.changeset(%{})
-    |> Ecto.Changeset.put_assoc(:examples, example)
-    |> Ecto.Changeset.put_assoc(:kanji, kanji)
-    |> Repo.update()
+  def get_many_kanji_by_character(kanji) do
+    IO.inspect(kanji)
+    Repo.all(
+      from(k in Kanji,
+        where: k.character in ^kanji,
+        left_join: e in assoc(k, :examples),
+        left_join: r in assoc(k, :radicals),
+        preload: [:radicals],
+        preload: [:examples]
+      )
+    )
   end
 
   @doc """
@@ -148,9 +150,12 @@ defmodule Aozora.KanjiData do
   def create_kanji(attrs \\ %{}) do
     %Kanji{}
     |> Kanji.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert(
+      on_conflict: { :replace_all_except, [:id, :inserted_at] },
+      conflict_target: :character
+    )
     |> case do
-      {:ok, %Kanji{} = kanji} -> {:ok, Repo.preload(kanji, :radicals)}
+      {:ok, %Kanji{} = kanji} -> {:ok, Repo.preload(kanji, [:radicals, :examples])}
       error -> error
     end
   end
@@ -168,8 +173,12 @@ defmodule Aozora.KanjiData do
 
   """
   def update_kanji(%Kanji{} = kanji, attrs) do
+    radicals = check_list_item_types(attrs["radicals"]) |> get_radical_by_id_or_string
+
     kanji
-    |> Kanji.changeset(attrs)
+    |> Repo.preload(:radicals)
+    |> change_kanji(attrs)
+    |> Ecto.Changeset.put_assoc(:radicals, radicals)
     |> Repo.update()
   end
 
@@ -199,7 +208,30 @@ defmodule Aozora.KanjiData do
 
   """
   def change_kanji(%Kanji{} = kanji, attrs \\ %{}) do
-    Kanji.changeset(kanji, attrs)
+    kanji |> Kanji.changeset(attrs["kanji"])
+  end
+
+  @doc """
+  Returns a list of kanji by id or character from a grouped list.
+
+  ## Examples
+
+      iex> get_radical_by_id_or_string({ false: ["一"], true: [2] })
+      [%Radical{ id: 1, bushu: "一", ... }]
+
+      iex> get_radical_by_id_or_string({ true: [1] })
+      [%Radical{ id: 1, bushu: "二", ...}]
+
+      iex> get_radical_by_id_or_string()
+      []
+  """
+  def get_radical_by_id_or_string(grouped) do
+    ids_result = list_radical_by_id(grouped[:true])
+
+    # TODO: check if characters in range of radicals unicode
+    chars_result = list_radical_by_character(grouped[:false])
+
+    ids_result ++ chars_result
   end
 
   @doc """
@@ -216,13 +248,13 @@ defmodule Aozora.KanjiData do
   end
 
   defp list_radical_by_id(nil), do: []
-  defp list_radical_by_id(radical) do
-    Repo.all(from r in Radical, where: r.id in ^radical)
+  defp list_radical_by_id(radicals) do
+    Repo.all(from r in Radical, where: r.id in ^radicals)
   end
 
   defp list_radical_by_character(nil), do: []
-  defp list_radical_by_character(radical) do
-    Repo.all(from r in Radical, where: r.character in ^radical)
+  defp list_radical_by_character(radicals) do
+    Repo.all(from r in Radical, where: r.bushu in ^radicals)
   end
 
   @doc """
@@ -241,6 +273,26 @@ defmodule Aozora.KanjiData do
   """
   def get_radical!(id), do: Repo.get!(Radical, id)
 
+  def get_radical_by_character(bushu) do
+    Repo.one(
+      from(r in Radical,
+        where: r.bushu == ^bushu,
+        left_join: k in assoc(r, :kanji),
+        preload: [:kanji]
+      )
+    )
+  end
+
+  def get_radicals_by_character(bushu) do
+    Repo.all(
+      from(r in Radical,
+        where: r.bushu in ^bushu,
+        left_join: k in assoc(r, :kanji),
+        preload: [:kanji]
+      )
+    )
+  end
+
   @doc """
   Creates a radical.
 
@@ -256,7 +308,10 @@ defmodule Aozora.KanjiData do
   def create_radical(attrs \\ %{}) do
     %Radical{}
     |> Radical.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert(
+      on_conflict: { :replace_all_except, [:id, :inserted_at] },
+      conflict_target: :bushu
+    )
   end
 
   @doc """
@@ -303,12 +358,11 @@ defmodule Aozora.KanjiData do
 
   """
   def change_radical(%Radical{} = radical, attrs \\ %{}) do
-    kanji = check_list_item_types(attrs["kanji"]) |> get_kanji_by_id_or_string
+    Radical.changeset(radical, attrs)
+  end
 
-    radical
-    |> Repo.preload(:kanji)
-    |> Radical.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:kanji, kanji)
+  def create_kanji_radical_relationship(radical, kanji) do
+    %{ kanji_id: kanji.id, radical_id: radical.id }
   end
 
   @doc """
@@ -338,24 +392,34 @@ defmodule Aozora.KanjiData do
       ** (Ecto.NoResultsError)
 
   """
-  def get_example!(id), do: Repo.get!(Example, id)
+  def get_example!(id), do: Example |> Repo.get!(id)
+
+  def get_example_by_japanese(japanese) do
+    Repo.one(
+      from(e in Example, where: e.japanese == ^japanese)
+    )
+  end
 
   @doc """
   Creates a example and assigns it to a kanji.
 
   ## Examples
 
-      iex> create_example(%Kanji{}, %{english: "this is the example"})
+      iex> create_example(
+        %Example{},
+        %Kanji{},
+        %{ example: %{ japanese: "日本語です", english: "this is the example" } }
+      )
       {:ok, %Example{}}
 
       iex> create_example(%Kanji{}, %{english: false})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_example(%Kanji{} = kanji, attrs \\ %{}) do
-    kanji
-    |> Ecto.build_assoc(:examples)
-    |> Example.changeset(attrs)
+  def create_example(%{example: example, kanji: kanji}) do
+    %Example{}
+    |> Example.changeset(example)
+    |> Ecto.Changeset.put_assoc(:kanji, [kanji])
     |> Repo.insert()
   end
 
@@ -405,4 +469,25 @@ defmodule Aozora.KanjiData do
   def change_example(%Example{} = example, attrs \\ %{}) do
     Example.changeset(example, attrs)
   end
+
+  # def seed_radical(%{radical: radical, kanji: kanji}) do
+  #   %Radical{}
+  #   |> Radical.changeset(radical)
+  #   |> Ecto.Changeset.put_assoc(:kanji, [kanji])
+  #   |> Repo.insert()
+
+  #   changeset = Radical.changeset(radical, %{ kanji: kanji })
+  #   Ecto.Multi.new()
+  #   |> Ecto.Multi.insert_or_update(:insert_or_update, changeset)
+  #   |> Aozora.Repo.transaction()
+
+  #   Ecto.Multi.new()
+  #   |> Ecto.Multi.run(:radical, fn repo, _changes ->
+  #     {:ok, repo.get(Radical, 1) || %Radical{}}
+  #   end)
+  #   |> Ecto.Multi.insert_or_update(:update, fn %{radical: radical} ->
+  #     Ecto.Changeset.change(radical, %{ kanji: kanji })
+  #   end)
+  #   |> Aozora.Repo.transaction()
+  # end
 end
