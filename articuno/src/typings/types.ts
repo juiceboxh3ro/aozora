@@ -47,8 +47,10 @@ export interface ActivityOptions {
 
 export interface AttachmentsObj {
   author?: string
-  proxyURL?: string
+  url?: string
   id?: string
+  // attachment?: string
+  // proxyURL?: string
 }
 
 export interface DeepLResponse {

@@ -15,13 +15,13 @@ const DeepL: SlashCommand = {
     },
     {
       name: 'target',
-      description: 'Target language, default: JA (for list of available languages use /available)',
+      description: 'Target language, default: JA (for list of available languages use /dpl_supported)',
       required: false,
       type: DiscordJS.Constants.ApplicationCommandOptionTypes.STRING,
     },
     {
       name: 'source',
-      description: 'Optional: Source language (for list of available languages use /available)',
+      description: 'Optional: Source language (for list of available languages use /dpl_supported)',
       required: false,
       type: DiscordJS.Constants.ApplicationCommandOptionTypes.STRING,
     },

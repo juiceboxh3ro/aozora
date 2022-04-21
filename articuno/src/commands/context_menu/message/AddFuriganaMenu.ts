@@ -6,23 +6,23 @@ import {
   MessageEmbed,
   User,
 } from 'discord.js'
-import { Image } from 'aws-sdk/clients/rekognition'
+// import { Image } from 'aws-sdk/clients/rekognition'
 import { AttachmentsObj, MessageCommand } from 'src/typings/types'
 import downloadImage from '../../../util/downloadImage'
 import withRekognition from '../../../util/withRekognition'
 import withFurigana from '../../../util/withFurigana'
 
-const attachmentWithFurigana = async (attachment: AttachmentsObj): Promise<string> => {
-  const _attachment = attachment.proxyURL!
+// const attachmentWithFurigana = async (attachment: AttachmentsObj): Promise<string> => {
+//   const _attachment = attachment.url!
 
-  const imageBuffer: Image | null = await downloadImage(_attachment)
-  let rekognized: string[] = []
-  if (imageBuffer) rekognized = await withRekognition(imageBuffer)
+//   const imageBuffer: Image | null = await downloadImage(_attachment)
+//   let rekognized: string[] = []
+//   if (imageBuffer) rekognized = await withRekognition(imageBuffer)
 
-  console.log(rekognized)
+//   console.log(rekognized)
   
-  return 'ok'
-}
+//   return 'ok'
+// }
 
 const embedWithFurigana = async (embed: MessageEmbed) => {
   // const transform = R.evolve({
@@ -76,17 +76,18 @@ const AddFuriganaMenu: MessageCommand = {
     const allowedAttachments = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp']
 
     if (fetchMessage?.attachments) {
-      attachments = fetchMessage.attachments
-        .map(({ contentType, id, proxyURL }: MessageAttachment) => {
+      attachments = fetchMessage.attachments.map(
+        ({ contentType, id, url }: MessageAttachment) => {
           if (contentType && allowedAttachments.includes(contentType)) {
-            return ({
+            return {
               author: author?.id,
               id,
-              proxyURL,
-            })
+              url,
+            }
           }
-          return ({})
-        })
+          return {}
+        }
+      )
     }
 
     let result = {}
