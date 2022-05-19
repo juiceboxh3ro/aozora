@@ -25,6 +25,7 @@ export type AZR_EmbedHandler = {
 
 export interface SlashCommand extends ChatInputApplicationCommandData {
   isDevCommand: boolean
+  isAdminCommand?: boolean
   run: (client: Client, interaction: BaseCommandInteraction) => Promise<void>
 }
 

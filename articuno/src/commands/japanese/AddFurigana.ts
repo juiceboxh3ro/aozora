@@ -15,13 +15,13 @@ const AddFurigana: SlashCommand = {
     },
   ],
   isDevCommand: false,
-  run: async (client: Client, interaction: BaseCommandInteraction) => {
+  run: async (client: Client, interaction: BaseCommandInteraction): Promise<void> => {
     const { options } = interaction
     const token = options.get('token', true).value!.toString()
 
     if (token.trim().length > 280) {
       await interaction.editReply({
-        content: `Enter a shorter phrase, please! Your token is ${token.trim().length - 280} characters too long.`
+        content: `Enter something shorter, please! Your message is ${token.trim().length - 280} characters too long.`
       })
       return
     }

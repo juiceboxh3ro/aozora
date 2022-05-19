@@ -8,6 +8,8 @@ interface WithDPL {
   embeds?: AZR_EmbedHandler[]
 }
 
+const cachedTranslations = {}
+
 const withDeepLTranslate = async (token: string, target: string, source = ''): Promise<WithDPL> => {
   const token_length_limit = 280
   let content = ''
@@ -23,7 +25,12 @@ const withDeepLTranslate = async (token: string, target: string, source = ''): P
   let embed_options: AZR_EmbedHandler = {}
 
   if (success) {
-    translated = await translate(token, target, source)
+    if (cachedTranslations?.[token]) {
+      translated = cachedTranslations[token]
+    } else {
+      translated = await translate(token, target, source)
+      cachedTranslations[token] = translated
+    }
 
     embed_options = {
       author: {

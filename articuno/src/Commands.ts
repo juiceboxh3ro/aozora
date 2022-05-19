@@ -4,6 +4,8 @@ import {
   AddFuriganaMenu,
   DeepL,
   DeepLSupported,
+  GetKanji,
+  Jisho,
   InviteAozora,
   TranslateMessage,
 } from './commands/index'
@@ -13,6 +15,8 @@ const DevCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
   AddFuriganaMenu,
   DeepL,
   DeepLSupported,
+  GetKanji,
+  Jisho,
   InviteAozora,
   TranslateMessage,
 ]
@@ -26,6 +30,7 @@ const GlobalCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
   AddFuriganaMenu,
   DeepL,
   DeepLSupported,
+  GetKanji,
   TranslateMessage,
 ]
 

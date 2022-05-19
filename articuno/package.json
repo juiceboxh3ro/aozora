@@ -19,7 +19,6 @@
   "dependencies": {
     "@discordjs/rest": "^0.3.0",
     "@discordjs/voice": "^0.8.0",
-    "aws-sdk": "^2.1114.0",
     "axios": "^0.26.1",
     "discord-api-types": "^0.31.1",
     "discord.js": "^13.6.0",
@@ -27,7 +26,9 @@
     "hanzi-to-pinyin": "^1.86.0",
     "kuroshiro": "^1.2.0",
     "kuroshiro-analyzer-kuromoji": "^1.1.0",
+    "node-cron": "^3.0.0",
     "ramda": "^0.28.0",
+    "tesseract.js": "2.1.5",
     "wanakana": "^4.0.2"
   },
   "devDependencies": {

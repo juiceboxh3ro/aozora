@@ -27,7 +27,7 @@ const DeepL: SlashCommand = {
     },
   ],
   isDevCommand: false,
-  run: async (client: Client, interaction: BaseCommandInteraction) => {
+  run: async (client: Client, interaction: BaseCommandInteraction): Promise<void> => {
     const { options } = interaction
 
     const token = options.get('translate', true).value!.toString()

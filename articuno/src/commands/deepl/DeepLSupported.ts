@@ -17,7 +17,7 @@ const DeepLSupported: SlashCommand = {
   description: 'Outputs a list of available languages to use with DeepL slash command',
   type: 'CHAT_INPUT',
   isDevCommand: false,
-  run: async (client: Client, interaction: BaseCommandInteraction) => {
+  run: async (client: Client, interaction: BaseCommandInteraction): Promise<void> => {
     const availableLanguages = supportedByDeepL()
     const langsAsFields: EmbedFieldData[] = createFieldsFromKeyValuePairs(availableLanguages)
     const embed = aozoraEmbedHandler({ fields: langsAsFields })
