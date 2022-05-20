@@ -25,7 +25,7 @@ const handleSlashCommand = async (
     if (!slashCommand) {
       handleCommandError(
         interaction,
-        `Interaction ${interaction.commandName} is not a registered slash command`
+        `Interaction "${interaction.commandName}" is not a registered slash command`
       )
       return
     }
@@ -35,7 +35,7 @@ const handleSlashCommand = async (
     ) {
       handleCommandError(
         interaction,
-        `Interaction ${interaction.commandName} is a development only command`
+        `Interaction "${interaction.commandName}" is a development only command`
       )
       return
     }

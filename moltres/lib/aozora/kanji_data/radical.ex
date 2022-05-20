@@ -18,6 +18,18 @@ defmodule Aozora.KanjiData.Radical do
     field :number, :integer, default: 1, min: 1, max: 214 # number of radical in sequence (in case ID mismatch)
     field :simplified, :string
 
+    # field :type, :string # "semantic" | "phonetic"
+    # field :radical_position, :string
+    # # "hen" | "tsukuri" | "kanmuri" | "ashi" | "kamae1~7" | "tare" | "nyou"
+    # # kamae sub-types:
+    # # 1 fully enclosed
+    # # 2 left & right side
+    # # 3 top
+    # # 4 top & left & bottom
+    # # 5 top & right
+    # # 6 z shape
+    # # 7 inverse 凸
+
     many_to_many :kanji, Aozora.KanjiData.Kanji, join_through: "kanji_radicals", on_replace: :delete
 
     timestamps()

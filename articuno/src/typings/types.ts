@@ -31,11 +31,13 @@ export interface SlashCommand extends ChatInputApplicationCommandData {
 
 export interface MessageCommand extends MessageApplicationCommandData {
   isDevCommand: boolean
+  isAdminCommand?: boolean
   run: (client: Client, interaction: ContextMenuInteraction) => Promise<void>
 }
 
 export interface UserCommand extends UserApplicationCommandData {
   isDevCommand: boolean
+  isAdminCommand?: boolean
   run: (client: Client, interaction: ContextMenuInteraction) => Promise<void>
 }
 

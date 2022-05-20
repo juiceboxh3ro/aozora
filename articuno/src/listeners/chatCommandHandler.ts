@@ -30,7 +30,7 @@ const getMentionedUsersFromMessage = (client: Client, message: Message, messageC
       .then((user: User) => {
         console.log(user)
         if (user.id === process.env.APPLICATION_ID) {
-          handleAozoraMentioned(client, message)
+          handleAozoraMentioned(message)
         }
         // const createdAt = user.createdAt.getTime()
         // if (createdAt < oneMinuteAgo) {

@@ -1,6 +1,6 @@
 {
   "name": "aozora",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "jesse goodburne",
   "license": "ISC",
   "repository": "https://github.com/juiceboxh3ro/aozora",
@@ -27,9 +27,11 @@
     "kuroshiro": "^1.2.0",
     "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "node-cron": "^3.0.0",
+    "python-shell": "^3.0.1",
     "ramda": "^0.28.0",
     "tesseract.js": "2.1.5",
-    "wanakana": "^4.0.2"
+    "wanakana": "^4.0.2",
+    "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@types/node": "^17.0.24",

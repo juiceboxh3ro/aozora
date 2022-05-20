@@ -5,6 +5,7 @@ import Commands from '../Commands'
 import interactionCreate from './interactionCreate'
 import chatCommandHandler from './chatCommandHandler'
 import updateStatus from './status'
+import { emotionJob } from '../util/aozoraEmotion'
 
 const AOZORA_GUILD_ID = process.env.AOZORA_GUILD_ID ?? ''
 // const FZ_STAFF_GUILD_ID = process.env.FZ_STAFF_GUILD_ID ?? ''
@@ -72,6 +73,7 @@ export default (client: Client): void => {
     onBotSignin(client)
     chatCommandHandler(client)
     interactionCreate(client)
+    emotionJob.start()
 
     const readyAt = client.readyTimestamp ?? Date.now()
     const onlineFrom = new Date(readyAt)

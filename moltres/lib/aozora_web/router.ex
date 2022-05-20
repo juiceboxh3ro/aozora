@@ -19,6 +19,7 @@ defmodule AozoraWeb.Router do
     get "/list_radical/:bushu", RadicalController, :show_by_bushu
     post "/list_radicals", RadicalController, :list_by_bushu
 
+    resources "/discord_members", DiscordMemberController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
