@@ -13,6 +13,7 @@ Aozora is a primarily Japanese language learning utility bot, with currently pla
 <ul>
   <li>word and sentence translation using DeepL</li>
   <li>the ability to un-kanji a Japanese sentence</li>
+  <li>group quizzes / Anki deck study (WIP)</li>
   <li>dictionary searching using Jisho (WIP)</li>
   <li>Hangeul to Romaji (WIP)</li>
   <li>saving searched/translated words to a user dictionary (WIP)</li>
@@ -23,11 +24,10 @@ Aozora is a primarily Japanese language learning utility bot, with currently pla
 Plans for the client app (all WIP) currently include:
 <ul>
   <li>Google/Apple OAuth, link Discord account after sign-in<sup>1</sup></li>
-  <li>export user dictionary as CSV for use in Anki, Memrise(?), From Zero</li>
+  <li>export user dictionary as CSV / Anki .apkg / something</li>
   <li>study saved words via normal flash cards or SRS flash cards</li>
   <li>grapheme/kanji writing practice</li>
   <li>skribbl.io but as the above</li>
-  <li>study streaks</li>
 </ul>
 <sup>1</sup>afaik Discord will send unverified emails through their OAuth, so to prevent hijacking of Aozora accounts a secure sign-in will first be required to then link Discord accounts.
 
@@ -53,7 +53,7 @@ Created with (major packages):
 * API<sup>2</sup>: Elixir 1.13.3 / Phoenix 1.6.6
 
 To be added:
-* Client<sup>3</sup>: Nextjs
+* Client<sup>3</sup>: Next.js? React Native?
 
 ## Setup
 Refer to the individual service folders (named after legendary bird Pokémon) within this repo for steps on how to set them up.

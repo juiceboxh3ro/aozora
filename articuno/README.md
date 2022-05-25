@@ -13,7 +13,7 @@
 
 ## About Aozora
 Aozora is currently a primarily Japanese language learning utility bot.<br>
-Planned features include falling back to Google Translate if DeepL does not support a target language, raw Japanese text to text with furigana, pronunciation results for searched words, saving searched words to an exportable Anki deck, character recognition from images, etc. etc.
+Planned features include falling back to Google Translate if DeepL does not support a target language, raw Japanese text to text with furigana, pronunciation results for searched words, saving searched words to an exportable Anki deck, etc. etc.
 
 ## Invite Aozora
 [https://discord.com/api/oauth2/authorize?client_id=929991689978937414&permissions=532643441728&scope=applications.commands%20bot](Invite Link)
@@ -25,8 +25,8 @@ Planned features include falling back to Google Translate if DeepL does not supp
 
 ## Planned Features
 - Google Translate support
-- savings searched translations results
-- OCR for images with non-English text
+- saving searched translations results
+- group quizzes / Anki deck study
 - Kana / Kanji / Hangul Typer game 
 - - NOTES FOR SELF:
 - - collect ping for each MessageCollection to more accurately judge response speed

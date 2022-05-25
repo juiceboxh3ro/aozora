@@ -1,4 +1,5 @@
 import DiscordJS, { BaseCommandInteraction, Client } from 'discord.js'
+import mathClamp from 'src/util/mathClamp'
 import { SlashCommand } from '../typings/types'
 
 const PurgeMessages: SlashCommand = {
@@ -13,10 +14,12 @@ const PurgeMessages: SlashCommand = {
       type: DiscordJS.Constants.ApplicationCommandOptionTypes.NUMBER,
     },
   ],
-  isDevCommand: false,
+  isDevCommand: true,
+  isAdminCommand: true,
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     const { options } = interaction
-    const amount = options.get('amount', true).value!
+    const value = options.get('amount', true).value! as string
+    const amount = mathClamp(parseInt(value, 10), 1, 50)
 
     if (amount) {
       console.log(amount)
