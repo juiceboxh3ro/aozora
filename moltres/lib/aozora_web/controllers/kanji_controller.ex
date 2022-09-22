@@ -11,7 +11,7 @@ defmodule AozoraWeb.KanjiController do
     render(conn, "index.json", kanji: kanji)
   end
 
-  def create(conn, %{"kanji" => kanji_params}) do
+  def create(conn, %{"id" => kanji_params}) do
     with {:ok, %Kanji{} = kanji} <- KanjiData.create_kanji(kanji_params) do
       conn
       |> put_status(:created)
@@ -23,16 +23,6 @@ defmodule AozoraWeb.KanjiController do
   def show(conn, %{"id" => id}) do
     kanji = KanjiData.get_kanji!(id)
     render(conn, "show.json", kanji: kanji)
-  end
-
-  def show_character(conn, %{"character" => character}) do
-    kanji = KanjiData.get_kanji_by_character(character)
-    render(conn, "show.json", kanji: kanji)
-  end
-
-  def show_many_characters(conn, %{"kanji" => kanji}) do
-    kanji = KanjiData.get_many_kanji_by_character(kanji)
-    render(conn, "index.json", kanji: kanji)
   end
 
   def update(conn, %{"id" => id} = params) do

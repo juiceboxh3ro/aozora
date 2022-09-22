@@ -11,55 +11,10 @@ defmodule Aozora.KanjiDataFixtures do
     {:ok, kanji} =
       attrs
       |> Enum.into(%{
-        character: "字",
-        en_meaning: "character",
-        stroke_count: "6",
-        onyomi: "ジ",
-        kunyomi: "アザ,アザナ,-ナ",
-        jlpt: 5,
-        grade: nil,
-        kodansha: nil,
-        wanikani: nil,
-        frequency: nil,
-        naritachi: nil,
-        classic_nelson: nil,
-        radical_types: nil,
-        radical_positions: nil,
+
       })
       |> Aozora.KanjiData.create_kanji()
 
     kanji
-  end
-
-  @doc """
-  Generate a radical.
-  """
-  def radical_fixture(attrs \\ %{}) do
-    {:ok, radical} =
-      attrs
-      |> Enum.into(%{
-        bushu: "some bushu",
-        en_name: "some en_name",
-        jp_name: "some jp_name",
-        meaning: "some meaning"
-      })
-      |> Aozora.KanjiData.create_radical()
-
-    radical
-  end
-
-  @doc """
-  Generate a example.
-  """
-  def example_fixture(attrs \\ %{}) do
-    {:ok, example} =
-      attrs
-      |> Enum.into(%{
-        english: "some english",
-        japanese: "some japanese"
-      })
-      |> Aozora.KanjiData.create_example()
-
-    example
   end
 end

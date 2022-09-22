@@ -1,7 +1,7 @@
 defmodule AozoraWeb.KanjiView do
   use AozoraWeb, :view
 
-  alias AozoraWeb.{ExampleView, KanjiView, RadicalView}
+  alias AozoraWeb.KanjiView
 
   def render("index.json", %{kanji: kanji}) do
     %{kanji: render_many(kanji, KanjiView, "kanji.json")}

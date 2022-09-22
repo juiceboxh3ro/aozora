@@ -5,4 +5,5 @@
     "./zapdos",
   ],
   "elixirLS.projectDir": "./moltres",
+  "git.ignoreLimitWarning": true,
 }

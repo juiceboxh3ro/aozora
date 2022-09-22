@@ -15,7 +15,6 @@ defmodule AozoraWeb.DiscordMemberController do
     with {:ok, %DiscordMember{} = member} <- Member.create_discord_member(member_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.discord_member_path(conn, :show, member))
       |> render("show.json", member: member)
     end
   end

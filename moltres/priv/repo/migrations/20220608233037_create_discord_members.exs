@@ -16,9 +16,6 @@ defmodule Aozora.Repo.Migrations.AddDiscordUserRecords do
       add :study_streak, :integer, null: false, default: 0
       add :total_days_studied, :integer, null: false, default: 0
 
-      # { type: 'kanji' | 'example' | 'radical' | 'translation', value: :string }
-      add :saved_search_results, :map, default: %{}
-
       timestamps()
     end
   end

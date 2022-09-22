@@ -9,16 +9,6 @@ defmodule AozoraWeb.Router do
     pipe_through :api
 
     resources "/kanji", KanjiController, except: [:new, :edit]
-    resources "/kanji/examples", ExampleController, except: [:new, :edit]
-
-    get "/list_kanji/:character", KanjiController, :show_character
-    post "/list_kanji", KanjiController, :show_many_characters
-
-    resources "/radicals", RadicalController, except: [:new, :edit]
-
-    get "/list_radical/:bushu", RadicalController, :show_by_bushu
-    post "/list_radicals", RadicalController, :list_by_bushu
-
     resources "/discord_members", DiscordMemberController, except: [:new, :edit]
   end
 

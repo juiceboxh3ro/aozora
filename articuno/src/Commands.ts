@@ -21,10 +21,6 @@ const DevCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
   TranslateMessage,
 ]
 
-const FZStaffCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
-
-]
-
 const GlobalCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
   AddFurigana,
   AddFuriganaMenu,
@@ -36,6 +32,5 @@ const GlobalCommands: (SlashCommand | MessageCommand | UserCommand)[] = [
 
 export default {
   DevCommands,
-  FZStaffCommands,
   GlobalCommands,
 }
